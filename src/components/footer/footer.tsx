@@ -14,7 +14,6 @@ const footerVars = {
   "--color-border": "rgba(241, 239, 230, 0.14)",
   "--color-border-strong": "rgba(241, 239, 230, 0.22)",
   "--color-surface": "#1a221d",
-  "--color-surface-2": "#212b24",
   "--color-accent": "#71b491",
   "--color-accent-fg": "#0f1512",
   "--color-accent-secondary": "#d3a35a",

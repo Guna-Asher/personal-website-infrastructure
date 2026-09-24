@@ -21,7 +21,6 @@ export default function Home() {
       </div>
 
       <div className="grid lg:grid-cols-[1fr_23rem]">
-        {/* Identity zone */}
         <div className="relative isolate flex flex-col justify-center px-6 py-16 md:px-8 md:py-20 lg:px-12 lg:py-0 xl:px-16">
           <AmbientLayer seed="home" variant="sparse" scale={0.6} allowLarge={false} />
           <RevealText as="div">

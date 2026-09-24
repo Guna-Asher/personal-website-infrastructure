@@ -88,7 +88,7 @@ export const projects: ProjectCaseStudy[] = [
         reason:
           "The real load is one organiser running weekly events at a fixed capacity — nowhere near what would justify operating a separate database service.",
         tradeoff:
-          "The code marks the exact swap point on purpose: a comment next to the capacity-check transaction notes that PostgreSQL's SELECT ... FOR UPDATE would replace SQLite's BEGIN IMMEDIATE without changing anything else in the service layer. This was a scoped decision with an exit path already written in, not a limitation discovered later.",
+          "There's a comment right next to the capacity-check transaction noting that PostgreSQL's SELECT ... FOR UPDATE would replace BEGIN IMMEDIATE without touching anything else in the service layer. I wrote that in on purpose, so switching later is a known, small change.",
       },
       {
         title: "Concurrency: BEGIN IMMEDIATE on capacity-sensitive writes",
@@ -97,7 +97,7 @@ export const projects: ProjectCaseStudy[] = [
         reason:
           "Without it, two players could both be confirmed into the same last open slot if their requests landed close together.",
         tradeoff:
-          "This isn't a performance choice — it's the one place in the system where correctness, never overselling a match, depends entirely on write ordering.",
+          "This has nothing to do with performance. It's the one place in the system where getting the write order right is what stops the match from being oversold.",
       },
       {
         title: "Registration and payment as two separate state machines",
@@ -111,7 +111,7 @@ export const projects: ProjectCaseStudy[] = [
         decision:
           "Promoting a waitlisted player checks that they're genuinely first in the queue by creation time, and re-checks capacity at the moment of promotion, not just at the moment they registered.",
         reason:
-          "A payment can arrive late, after the event has already filled from other confirmed players. When that happens, the registration is demoted to waitlisted rather than double-booking the event or silently discarding the payment — a real, exercised code path, not a hypothetical edge case.",
+          "A payment can arrive late, after the event has already filled from other confirmed players. When that happens, the registration gets demoted back to waitlisted instead of double-booking the event or silently dropping the payment.",
       },
       {
         title: "Session-cookie authentication, not JWT",
@@ -133,12 +133,12 @@ export const projects: ProjectCaseStudy[] = [
       "Single organiser login model — no multi-organiser support.",
       "No player accounts — registration is per-event, by phone number.",
       "No payment gateway — proof-of-payment review only.",
-      "These are stated as deliberate MVP scope in the project's own roadmap, not gaps discovered after the fact.",
+      "This is the MVP scope from the project's own roadmap, decided up front.",
     ],
     result:
-      "Built and validated end to end, including a run against a real cricket match — registration, waitlist handling, and payment verification were all exercised with real players, not only local test fixtures. It has not been operated as a continuously running service beyond that one validated run. It should be described as built and proven, not as an actively used, regularly operating platform.",
+      "Built and validated end to end, including a run against a real cricket match — registration, waitlist handling, and payment verification all worked with real players, not just local test data. I haven't run it as an ongoing service beyond that one match. It's built and proven, not something I operate day to day.",
     lessons:
-      "The most reusable idea here isn't a library choice — it's making the SQLite-vs-Postgres decision reversible on purpose, by leaving the exact swap point documented in the code, instead of treating the database as a decision made once and never revisited. A next version would extend that same discipline to the payment flow: proof-of-payment review is honest and workable at one-organiser, weekly-event volume, but it doesn't scale past that without a real payment integration — a known boundary, not a surprise.",
+      "The most useful thing I did here wasn't picking SQLite over Postgres — it was making that decision reversible on purpose, by leaving the exact swap point documented in the code instead of treating the database choice as permanent. I'd apply the same thinking to the payment flow next: proof-of-payment review works fine at one-organiser, weekly-event volume, but it won't scale past that without real payment integration. I already know that.",
   },
   {
     slug: "deployment-portal",
@@ -202,14 +202,14 @@ export const projects: ProjectCaseStudy[] = [
         decision:
           "Deployments maintain a relationship to the deployment they replaced, and a separate deployment-log model records each step of a deployment — image pull, container stop, container removal, container start, and any error.",
         reason:
-          "This is what makes rollback traceable rather than a blind \"run the old image again,\" and gives real visibility into what happened during a failed deployment, not just its final status. Both are implemented, not aspirational.",
+          "This is what makes rollback traceable instead of just \"run the old image again,\" and gives visibility into what actually happened during a failed deployment. Both are built and working, not just planned.",
       },
     ],
     deployment:
       "Docker Compose runs the API and PostgreSQL as two services. Schema changes go through Alembic migrations, run explicitly (alembic upgrade head) rather than automatically on boot.",
     constraints: [
       "Single-host deployments — no Kubernetes, no multi-host orchestration.",
-      "No role-based access control — every authenticated user currently has the same capabilities. Stated directly in the project's own documentation as a known gap.",
+      "No role-based access control yet — every authenticated user has the same capabilities. I noted this as a known gap in the project's own docs.",
       "CI/CD integration and health-check-based auto-rollback are listed as in progress in the project's own roadmap, not finished.",
     ],
     failureRecovery: [
@@ -223,7 +223,7 @@ export const projects: ProjectCaseStudy[] = [
         symptom: "password cannot be longer than 72 bytes",
         cause: "passlib's bcrypt backend enforcing a length limit unexpectedly.",
         fix: "Dropped passlib, hashed passwords directly with the bcrypt library.",
-        lesson: "A wrapper library around a well-understood primitive can introduce its own failure mode.",
+        lesson: "Even a wrapper around something as simple as bcrypt can introduce its own bug.",
       },
       {
         symptom: "unknown flag --detach on docker create",
@@ -233,9 +233,9 @@ export const projects: ProjectCaseStudy[] = [
       },
     ],
     result:
-      "Functions end to end as an internal tool: registering an application, registering a version, deploying it, and rolling it back all work through the dashboard, with every step logged. It has not been used as the deployment path for a team with multiple concurrent users — it's been built and exercised by one person, thoroughly, not operated at team scale.",
+      "Works end to end as an internal tool: registering an application, registering a version, deploying it, and rolling it back all happen through the dashboard, with every step logged. I've built and tested it myself, thoroughly — it hasn't been used by a team yet.",
     lessons:
-      "The Docker SDK failure is the clearest lesson in the project: reaching for the \"proper\" SDK wasn't actually the safer choice here. The CLI, wrapped carefully through subprocess calls, turned out more portable across Docker versions and far easier to debug when something went wrong. The project's own honesty about what it doesn't have yet — no RBAC, CI/CD still in progress — is worth carrying forward as a habit, not just a one-time disclosure.",
+      "The Docker SDK failure is the clearest lesson here: reaching for the \"proper\" SDK wasn't actually the safer choice. The CLI, wrapped carefully through subprocess calls, turned out more portable across Docker versions and easier to debug when something went wrong. I've tried to keep being upfront about what's missing — no RBAC, CI/CD still in progress — instead of mentioning it once and moving on.",
   },
   {
     slug: "aws-log-monitoring",
@@ -283,6 +283,6 @@ Build check: GitHub Actions, on every push`,
     result:
       "Runs the intended loop successfully: filters error lines, uploads a timestamped archive to S3, on schedule, with no credential ever touching the code or the instance's filesystem. It has not been extended past that one loop — one log file, one bucket, substring matching rather than structured log parsing, and no retry or alerting if an individual upload fails.",
     lessons:
-      "The habit worth keeping and repeating elsewhere: default to an IAM role instead of a static key, even on something this small. The project didn't need to be a bigger system to be a security decision made correctly.",
+      "The habit I want to keep repeating: default to an IAM role instead of a static key, even on something this small. The project didn't need to be bigger to get that right.",
   },
 ];

@@ -29,9 +29,9 @@ export function SkillsSection() {
               </h3>
               <ul className="mt-5 space-y-3">
                 {category.skills.map((skill) => (
-                  <li key={skill.name}>
+                  <li key={skill}>
                     <span className="font-display cursor-default text-lg font-semibold tracking-tight decoration-accent decoration-2 underline-offset-4 transition-all hover:underline">
-                      {skill.name}
+                      {skill}
                     </span>
                   </li>
                 ))}
