@@ -1,7 +1,7 @@
 export const site = {
   name: "Guna R",
   initials: "GR",
-  role: "Cloud & DevOps Engineer",
+  role: "Cloud / DevOps",
   tagline: "I build applications — and the infrastructure that keeps them running.",
   email: "gunardsce@gmail.com",
   github: "https://github.com/Guna-Asher",
@@ -12,10 +12,4 @@ export const site = {
   location: "India",
 };
 
-export const navLinks = [
-  { label: "Work", href: "#projects" },
-  { label: "Building", href: "#building" },
-  { label: "Skills", href: "#skills" },
-  { label: "Process", href: "#process" },
-  { label: "Contact", href: "#contact" },
-];
+export const navLinks = [{ label: "Work", href: "/work" }];

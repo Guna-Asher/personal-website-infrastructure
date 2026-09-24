@@ -9,7 +9,7 @@ export function SkillsSection() {
     <section id="skills" className="relative isolate py-20 md:py-28 lg:py-32 xl:py-40">
       <AmbientLayer seed="skills" variant="sparse" scale={0.55} allowLarge={false} />
       <Container>
-        <SectionHeading index="03" eyebrow="Toolbox" title="Skills" />
+        <SectionHeading index="02" eyebrow="Toolbox" title="Skills" />
 
         <div className="mt-12 grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           {skillCategories.map((category, i) => (
@@ -19,9 +19,9 @@ export function SkillsSection() {
               </h3>
               <ul className="mt-5 space-y-3">
                 {category.skills.map((skill) => (
-                  <li key={skill}>
+                  <li key={skill.name}>
                     <span className="font-display cursor-default text-lg font-medium tracking-tight decoration-accent decoration-2 underline-offset-4 transition-all hover:underline">
-                      {skill}
+                      {skill.name}
                     </span>
                   </li>
                 ))}

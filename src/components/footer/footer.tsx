@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties, MouseEvent } from "react";
+import type { CSSProperties } from "react";
 import { ArrowUp } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { InteractiveLink } from "@/components/ui/interactive-link";
@@ -18,11 +18,6 @@ const footerVars = {
   "--ambient-symbol-color": "#f5f5f5",
   "--ambient-theme-boost": 0.06,
 } as CSSProperties;
-
-function scrollToId(e: MouseEvent<HTMLAnchorElement>, id: string) {
-  e.preventDefault();
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-}
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -46,11 +41,12 @@ export function Footer() {
           <div>
             <p className="font-mono text-xs tracking-widest text-muted uppercase">Explore</p>
             <ul className="mt-5 space-y-4">
+              <li>
+                <InteractiveLink href="/">Home</InteractiveLink>
+              </li>
               {navLinks.map((link) => (
                 <li key={link.href}>
-                  <InteractiveLink href={link.href} onClick={(e) => scrollToId(e, link.href.slice(1))}>
-                    {link.label}
-                  </InteractiveLink>
+                  <InteractiveLink href={link.href}>{link.label}</InteractiveLink>
                 </li>
               ))}
             </ul>

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { MouseEventHandler, ReactNode } from "react";
 
@@ -16,14 +17,10 @@ export function InteractiveLink({
   className?: string;
   onClick?: MouseEventHandler<HTMLAnchorElement>;
 }) {
-  return (
-    <a
-      href={href}
-      target={external ? "_blank" : undefined}
-      rel={external ? "noopener noreferrer" : undefined}
-      onClick={onClick}
-      className={`group relative inline-flex items-center gap-2 rounded-sm font-mono text-xs tracking-widest uppercase transition-transform duration-300 ease-out hover:-translate-y-0.5 focus-visible:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none ${className}`}
-    >
+  const classes = `group relative inline-flex items-center gap-2 rounded-sm font-mono text-xs tracking-widest uppercase transition-transform duration-300 ease-out hover:-translate-y-0.5 focus-visible:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none ${className}`;
+
+  const content = (
+    <>
       <span className="relative inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center">
         <ArrowRight
           className="absolute h-3.5 w-3.5 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:opacity-0 group-focus-visible:-translate-y-1 group-focus-visible:translate-x-1 group-focus-visible:opacity-0"
@@ -43,6 +40,28 @@ export function InteractiveLink({
       >
         ✦
       </span>
+    </>
+  );
+
+  // Internal route (e.g. "/work") gets client-side navigation via next/link.
+  // Anything external, or a non-route scheme like mailto:/tel:, stays a plain anchor.
+  if (!external && href.startsWith("/")) {
+    return (
+      <Link href={href} onClick={onClick} className={classes}>
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <a
+      href={href}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
+      onClick={onClick}
+      className={classes}
+    >
+      {content}
     </a>
   );
 }

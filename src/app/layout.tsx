@@ -25,9 +25,9 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500"],
 });
 
-const title = "Guna R - Cloud & DevOps Engineer";
+const title = "Guna R — Cloud / DevOps";
 const description =
-  "Portfolio of Guna R — an aspiring Cloud & DevOps Engineer who builds applications and the infrastructure that runs them.";
+  "Guna R builds backend systems and the infrastructure that runs them — three projects, deployed and operated end to end.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

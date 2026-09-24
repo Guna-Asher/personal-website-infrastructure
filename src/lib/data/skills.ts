@@ -1,23 +1,51 @@
+export type Skill = {
+  name: string;
+  /** Slugs of projects (see lib/data/projects.ts) that demonstrate this skill. */
+  projects?: string[];
+};
+
 export type SkillCategory = {
   label: string;
-  skills: string[];
+  skills: Skill[];
 };
 
 export const skillCategories: SkillCategory[] = [
   {
     label: "Cloud & Infrastructure",
-    skills: ["Linux", "AWS", "EC2", "S3", "IAM", "VPC / Networking", "CloudWatch", "Nginx"],
+    skills: [
+      { name: "Linux", projects: ["aws-log-monitoring"] },
+      { name: "AWS", projects: ["aws-log-monitoring"] },
+      { name: "EC2", projects: ["aws-log-monitoring"] },
+      { name: "S3", projects: ["aws-log-monitoring"] },
+      { name: "IAM", projects: ["aws-log-monitoring"] },
+      { name: "Networking" },
+      { name: "Nginx" },
+    ],
   },
   {
     label: "DevOps & Automation",
-    skills: ["Docker", "Docker Compose", "GitHub Actions", "CI/CD", "Bash", "Terraform", "Kubernetes"],
+    skills: [
+      { name: "Docker", projects: ["stranger-club", "deployment-portal", "aws-log-monitoring"] },
+      { name: "Docker Compose", projects: ["deployment-portal"] },
+      { name: "GitHub Actions", projects: ["aws-log-monitoring"] },
+      { name: "CI/CD", projects: ["aws-log-monitoring"] },
+      { name: "Bash" },
+    ],
   },
   {
     label: "Backend",
-    skills: ["Python", "FastAPI", "REST APIs", "PostgreSQL", "SQL", "SQLAlchemy", "Alembic"],
+    skills: [
+      { name: "Python", projects: ["stranger-club", "deployment-portal", "aws-log-monitoring"] },
+      { name: "FastAPI", projects: ["stranger-club", "deployment-portal"] },
+      { name: "REST APIs", projects: ["stranger-club", "deployment-portal"] },
+      { name: "PostgreSQL", projects: ["deployment-portal"] },
+      { name: "SQLite", projects: ["stranger-club"] },
+      { name: "SQLAlchemy", projects: ["stranger-club", "deployment-portal"] },
+      { name: "Alembic", projects: ["deployment-portal"] },
+    ],
   },
   {
     label: "Tools",
-    skills: ["Git", "GitHub", "AWS CLI", "Docker CLI", "Postman"],
+    skills: [{ name: "Git" }, { name: "GitHub" }, { name: "AWS CLI" }, { name: "Docker CLI" }, { name: "Postman" }],
   },
 ];
