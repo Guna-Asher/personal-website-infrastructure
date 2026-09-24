@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { RevealText } from "@/components/ui/reveal-text";
 import { CornerMarks } from "@/components/ui/corner-marks";
 import { InteractiveLink } from "@/components/ui/interactive-link";
@@ -17,23 +18,23 @@ export function ProjectIndexRow({
 }) {
   return (
     <li className="group relative border-b border-border py-10 md:py-12">
-      <CornerMarks className="opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <CornerMarks className="opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible/link:opacity-100" />
 
       <RevealText as="div" delay={delay}>
         <Link
           href={`/work/${project.slug}`}
-          className="block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          className="group/link block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         >
           <div className="grid grid-cols-1 gap-4 md:grid-cols-[5.5rem_1fr] md:gap-10">
             <span
-              className="font-display text-5xl font-medium tracking-tight text-muted/40 transition-colors group-hover:text-accent/60 md:text-6xl"
+              className="font-display text-5xl font-medium tracking-tight text-muted/40 transition-colors group-hover/link:text-accent/60 group-focus-visible/link:text-accent/60 md:text-6xl"
               aria-hidden
             >
               {index}
             </span>
             <div className="min-w-0">
               <h3
-                className={`font-display font-medium tracking-tight transition-colors group-hover:text-accent ${
+                className={`font-display font-medium tracking-tight transition-colors group-hover/link:text-accent group-focus-visible/link:text-accent ${
                   emphasis ? "text-4xl md:text-5xl" : "text-2xl md:text-3xl"
                 }`}
               >
@@ -45,6 +46,13 @@ export function ProjectIndexRow({
               <p className="mt-4 max-w-lg text-muted">{project.oneLiner}</p>
               <p className="mt-3 max-w-lg font-mono text-xs text-muted/80">{project.flow}</p>
               <p className="mt-4 font-mono text-xs text-muted">{project.stack.join(" · ")}</p>
+              <p className="mt-5 inline-flex items-center gap-2 font-mono text-xs tracking-widest text-muted uppercase transition-colors group-hover/link:text-accent group-focus-visible/link:text-accent">
+                View case study
+                <ArrowRight
+                  className="h-3.5 w-3.5 transition-transform duration-300 group-hover/link:translate-x-1 group-focus-visible/link:translate-x-1"
+                  aria-hidden
+                />
+              </p>
             </div>
           </div>
         </Link>

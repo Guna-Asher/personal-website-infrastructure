@@ -17,25 +17,43 @@ export function InteractiveLink({
   className?: string;
   onClick?: MouseEventHandler<HTMLAnchorElement>;
 }) {
+  const isMailto = href.startsWith("mailto:");
+  // A mailto link leaves the site the same way an external link does —
+  // give both a persistent "leaving" cue instead of only revealing it on
+  // hover, which a touch user would never see before tapping.
+  const leavesSite = external || isMailto;
+
   // -my-1.5/py-1.5 cancel out visually (net position unchanged) but widen the
   // actual tappable box — the visible line is ~20px tall on its own, under a
   // comfortable touch-target minimum.
   const classes = `group relative -my-1.5 inline-flex items-center gap-2 rounded-sm py-1.5 font-mono text-xs tracking-widest uppercase transition-transform duration-300 ease-out hover:-translate-y-0.5 focus-visible:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none ${className}`;
 
+  const icon = leavesSite ? (
+    <ArrowUpRight
+      className="absolute h-3.5 w-3.5 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-focus-visible:-translate-y-0.5 group-focus-visible:translate-x-0.5"
+      aria-hidden
+    />
+  ) : (
+    <>
+      <ArrowRight
+        className="absolute h-3.5 w-3.5 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:opacity-0 group-focus-visible:-translate-y-1 group-focus-visible:translate-x-1 group-focus-visible:opacity-0"
+        aria-hidden
+      />
+      <ArrowUpRight
+        className="absolute h-3.5 w-3.5 -translate-y-1 translate-x-1 opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:translate-x-0 group-focus-visible:opacity-100"
+        aria-hidden
+      />
+    </>
+  );
+
   const content = (
     <>
-      <span className="relative inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center">
-        <ArrowRight
-          className="absolute h-3.5 w-3.5 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:opacity-0 group-focus-visible:-translate-y-1 group-focus-visible:translate-x-1 group-focus-visible:opacity-0"
-          aria-hidden
-        />
-        <ArrowUpRight
-          className="absolute h-3.5 w-3.5 -translate-y-1 translate-x-1 opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:translate-x-0 group-focus-visible:opacity-100"
-          aria-hidden
-        />
-      </span>
+      <span className="relative inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center">{icon}</span>
       <span className="border-b border-current pb-0.5 transition-colors duration-300 group-hover:text-accent group-focus-visible:text-accent">
         {children}
+        {leavesSite && (
+          <span className="sr-only">{isMailto ? " (opens your email app)" : " (opens in a new tab)"}</span>
+        )}
       </span>
       <span
         aria-hidden

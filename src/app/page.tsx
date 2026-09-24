@@ -24,7 +24,7 @@ export default function Home() {
             <p className="mt-6 max-w-xl text-lg text-muted">{site.tagline}</p>
             <Link
               href="/work"
-              className="mt-10 inline-flex w-fit items-center gap-2 border-b-2 border-foreground pb-1 font-display text-xl font-medium tracking-tight transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="mt-10 inline-flex w-fit items-center gap-2 rounded-sm border-b-2 border-foreground pb-1 font-display text-xl font-medium tracking-tight transition-colors hover:border-accent hover:text-accent focus-visible:border-accent focus-visible:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               View Work
               <ArrowRight className="h-5 w-5" aria-hidden />

@@ -28,5 +28,13 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
   const position = projects.findIndex((p) => p.slug === slug);
   if (position === -1) notFound();
 
-  return <CaseStudy project={projects[position]} position={position + 1} total={projects.length} />;
+  return (
+    <CaseStudy
+      project={projects[position]}
+      position={position + 1}
+      total={projects.length}
+      previous={projects[position - 1]}
+      next={projects[position + 1]}
+    />
+  );
 }

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { InteractiveLink } from "@/components/ui/interactive-link";
 import { ArchitectureDiagram } from "./architecture-diagram";
@@ -24,10 +24,14 @@ export function CaseStudy({
   project,
   position,
   total,
+  previous,
+  next,
 }: {
   project: ProjectCaseStudy;
   position: number;
   total: number;
+  previous?: ProjectCaseStudy;
+  next?: ProjectCaseStudy;
 }) {
   const sections: Section[] = [
     {
@@ -153,7 +157,7 @@ export function CaseStudy({
           ))}
         </div>
 
-        <div className="mt-16 border-t border-border pt-10">
+        <div className="mt-16 flex flex-col gap-8 border-t border-border pt-10 sm:flex-row sm:items-start sm:justify-between">
           <Link
             href="/work"
             className="inline-flex items-center gap-2 rounded-sm font-mono text-xs tracking-widest text-muted uppercase transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
@@ -161,6 +165,32 @@ export function CaseStudy({
             <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
             Back to Work
           </Link>
+
+          {(previous || next) && (
+            <div className="flex flex-col gap-4 sm:items-end">
+              {next && (
+                <Link
+                  href={`/work/${next.slug}`}
+                  className="group/nav inline-flex items-center gap-2 rounded-sm text-right font-mono text-xs tracking-widest text-muted uppercase transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+                >
+                  Next — {next.title}
+                  <ArrowRight
+                    className="h-3.5 w-3.5 transition-transform duration-300 group-hover/nav:translate-x-1 group-focus-visible/nav:translate-x-1"
+                    aria-hidden
+                  />
+                </Link>
+              )}
+              {previous && (
+                <Link
+                  href={`/work/${previous.slug}`}
+                  className="inline-flex items-center gap-2 rounded-sm font-mono text-xs tracking-widest text-muted uppercase transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+                >
+                  <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
+                  Previous — {previous.title}
+                </Link>
+              )}
+            </div>
+          )}
         </div>
       </Container>
     </article>
