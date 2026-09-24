@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 
 export function RevealText({
@@ -14,12 +14,16 @@ export function RevealText({
   delay?: number;
   as?: "div" | "span";
 }) {
-  const animation = {
-    initial: { opacity: 0, y: 24 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, margin: "-10% 0px -10% 0px" } as const,
-    transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] as const },
-  };
+  const reduceMotion = useReducedMotion();
+
+  const animation = reduceMotion
+    ? { initial: { opacity: 1, y: 0 }, whileInView: { opacity: 1, y: 0 } }
+    : {
+        initial: { opacity: 0, y: 24 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, margin: "-10% 0px -10% 0px" } as const,
+        transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] as const },
+      };
 
   if (as === "span") {
     return (

@@ -1,43 +1,60 @@
 import Link from "next/link";
+import { RevealText } from "@/components/ui/reveal-text";
 import { CornerMarks } from "@/components/ui/corner-marks";
 import { InteractiveLink } from "@/components/ui/interactive-link";
 import type { ProjectCaseStudy } from "@/lib/data/projects";
 
-export function ProjectIndexRow({ project, index }: { project: ProjectCaseStudy; index: string }) {
+export function ProjectIndexRow({
+  project,
+  index,
+  delay = 0,
+  emphasis = false,
+}: {
+  project: ProjectCaseStudy;
+  index: string;
+  delay?: number;
+  emphasis?: boolean;
+}) {
   return (
-    <li className="group relative border-b border-border py-8">
+    <li className="group relative border-b border-border py-10 md:py-12">
       <CornerMarks className="opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-      <Link
-        href={`/work/${project.slug}`}
-        className="block rounded-sm px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent md:px-4"
-      >
-        <div className="grid grid-cols-[3rem_1fr] gap-x-6 gap-y-4 md:grid-cols-[4rem_1fr] md:gap-x-10">
-          <span className="font-mono text-sm text-muted">{index}</span>
-          <div className="min-w-0">
-            <h3 className="font-display text-2xl font-medium tracking-tight transition-colors group-hover:text-accent md:text-3xl">
-              {project.title}
-            </h3>
-            <p className="mt-1 font-mono text-xs tracking-widest text-muted uppercase">
-              {project.type} · {project.stage}
-            </p>
-            <p className="mt-3 max-w-lg text-muted">{project.oneLiner}</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {project.stack.map((tech) => (
-                <span key={tech} className="rounded-full border border-border px-3 py-1 font-mono text-xs text-muted">
-                  {tech}
-                </span>
-              ))}
+      <RevealText as="div" delay={delay}>
+        <Link
+          href={`/work/${project.slug}`}
+          className="block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        >
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-[5.5rem_1fr] md:gap-10">
+            <span
+              className="font-display text-5xl font-medium tracking-tight text-muted/40 transition-colors group-hover:text-accent/60 md:text-6xl"
+              aria-hidden
+            >
+              {index}
+            </span>
+            <div className="min-w-0">
+              <h3
+                className={`font-display font-medium tracking-tight transition-colors group-hover:text-accent ${
+                  emphasis ? "text-3xl md:text-4xl" : "text-2xl md:text-3xl"
+                }`}
+              >
+                {project.title}
+              </h3>
+              <p className="mt-2 font-mono text-xs tracking-widest text-muted uppercase">
+                {project.type} · {project.stage}
+              </p>
+              <p className="mt-4 max-w-lg text-muted">{project.oneLiner}</p>
+              <p className="mt-3 max-w-lg font-mono text-xs text-muted/80">{project.flow}</p>
+              <p className="mt-4 font-mono text-xs text-muted">{project.stack.join(" · ")}</p>
             </div>
           </div>
-        </div>
-      </Link>
+        </Link>
 
-      <div className="mt-4 pl-[3.25rem] md:pl-[4.75rem]">
-        <InteractiveLink href={project.github} external>
-          View source on GitHub
-        </InteractiveLink>
-      </div>
+        <div className="mt-5 md:pl-[7.5rem]">
+          <InteractiveLink href={project.github} external>
+            View source on GitHub
+          </InteractiveLink>
+        </div>
+      </RevealText>
     </li>
   );
 }

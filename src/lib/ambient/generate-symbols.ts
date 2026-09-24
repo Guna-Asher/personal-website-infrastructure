@@ -23,7 +23,10 @@ export type AmbientObject = {
 
 export type AmbientVariant = "sparse" | "default" | "dense";
 
-const SHAPE_POOL = ["✦", "✧", "✣", "✥", "✺", "✹", "+", "×", "⊹", "*"];
+// Leans toward simple, systems-coded marks (+, ×, ·, ∘) rather than ornate
+// sparkle glyphs — the ambient layer should read as environmental texture,
+// not decoration.
+const SHAPE_POOL = ["+", "×", "·", "∘", "✦", "✧"];
 
 const VARIANT_COUNTS: Record<AmbientVariant, { mobile: number; tablet: number; desktop: number }> = {
   sparse: { mobile: 2, tablet: 4, desktop: 6 },

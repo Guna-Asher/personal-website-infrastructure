@@ -20,6 +20,8 @@ export type ProjectCaseStudy = {
   type: string;
   stage: ProjectStage;
   oneLiner: string;
+  /** One real, compressed line distilled from `architecture.diagram` — used as a teaser on /work. */
+  flow: string;
   stack: string[];
   github: string;
   problem: string;
@@ -43,6 +45,7 @@ export const projects: ProjectCaseStudy[] = [
     stage: "MVP",
     oneLiner:
       "A cricket-match registration platform that replaced a Google Form, a UPI QR code, and WhatsApp screenshots with one system — live slot availability, a FIFO waitlist, and organiser-reviewed payments.",
+    flow: "registration → capacity check (BEGIN IMMEDIATE) → SQLite → SSE broadcast",
     stack: ["React", "Vite", "FastAPI", "Python", "SQLite", "SQLAlchemy", "Server-Sent Events", "Docker"],
     github: "https://github.com/Guna-Asher/Stranger-Club",
     problem:
@@ -144,6 +147,7 @@ export const projects: ProjectCaseStudy[] = [
     stage: "Shipped",
     oneLiner:
       "An internal dashboard for deploying Dockerized applications without SSH access — register a version, click deploy, and roll back safely if it fails.",
+    flow: "deploy request → background task → Docker CLI → container → audit log",
     stack: ["FastAPI", "Python", "PostgreSQL", "SQLAlchemy", "Alembic", "JWT", "bcrypt", "Docker", "Docker Compose"],
     github: "https://github.com/Guna-Asher/Self-Service-Deployment-Portal",
     problem:
@@ -240,6 +244,7 @@ export const projects: ProjectCaseStudy[] = [
     stage: "Shipped",
     oneLiner:
       "A small scheduled pipeline that pulls error lines out of an EC2 application log and archives them to S3 every hour, authenticated through an IAM instance role instead of stored keys.",
+    flow: "app.log → filter ERROR → S3 upload (IAM role) → hourly via cron",
     stack: ["Python", "Docker", "AWS EC2", "AWS S3", "AWS IAM", "cron", "GitHub Actions"],
     github: "https://github.com/Guna-Asher/aws-log-monitoring-project",
     problem:

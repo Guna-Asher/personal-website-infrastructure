@@ -25,8 +25,8 @@ export async function generateMetadata({
 
 export default async function ProjectPage({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
-  const project = projects.find((p) => p.slug === slug);
-  if (!project) notFound();
+  const position = projects.findIndex((p) => p.slug === slug);
+  if (position === -1) notFound();
 
-  return <CaseStudy project={project} />;
+  return <CaseStudy project={projects[position]} position={position + 1} total={projects.length} />;
 }

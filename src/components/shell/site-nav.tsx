@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { site } from "@/lib/data/site";
@@ -30,9 +31,10 @@ export function SiteNav() {
             href={site.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-sm text-sm text-muted transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+            className="inline-flex items-center gap-0.5 rounded-sm text-sm text-muted transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
           >
-            GitHub ↗
+            GitHub
+            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
           </a>
         </nav>
 
