@@ -6,7 +6,7 @@ export default function WorkLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <SiteNav />
-      <main>{children}</main>
+      <main id="main-content">{children}</main>
       <Footer />
     </>
   );

@@ -34,7 +34,7 @@ export function ProjectIndexRow({
             <div className="min-w-0">
               <h3
                 className={`font-display font-medium tracking-tight transition-colors group-hover:text-accent ${
-                  emphasis ? "text-3xl md:text-4xl" : "text-2xl md:text-3xl"
+                  emphasis ? "text-4xl md:text-5xl" : "text-2xl md:text-3xl"
                 }`}
               >
                 {project.title}

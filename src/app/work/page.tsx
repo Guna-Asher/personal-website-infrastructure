@@ -31,7 +31,7 @@ export default function WorkPage() {
         </Container>
       </section>
 
-      <Container className="pb-16 md:pb-24">
+      <Container>
         <ol className="list-none">
           {projects.map((project, i) => (
             <ProjectIndexRow

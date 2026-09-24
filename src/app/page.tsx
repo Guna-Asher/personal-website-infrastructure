@@ -9,7 +9,7 @@ import { site } from "@/lib/data/site";
 
 export default function Home() {
   return (
-    <main className="relative isolate flex min-h-screen flex-col">
+    <main id="main-content" className="relative isolate flex min-h-screen flex-col">
       <AmbientLayer seed="home" variant="sparse" scale={0.6} allowLarge={false} />
 
       <div className="absolute top-6 right-6 md:top-8 md:right-8">
@@ -17,7 +17,7 @@ export default function Home() {
       </div>
 
       <Container className="flex flex-1 items-center py-24">
-        <div className="grid w-full gap-12 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-20">
+        <div className="grid w-full gap-12 lg:grid-cols-[1fr_auto] lg:items-start lg:gap-20">
           <RevealText as="div">
             <p className="font-mono text-sm tracking-widest text-muted uppercase">{site.role}</p>
             <h1 className="font-display text-display mt-3 font-medium tracking-tight">{site.name}</h1>

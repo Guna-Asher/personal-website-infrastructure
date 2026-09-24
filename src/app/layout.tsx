@@ -58,6 +58,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased" suppressHydrationWarning>
+        <a
+          href="#main-content"
+          className="sr-only rounded-sm bg-accent px-4 py-2 font-mono text-xs tracking-widest text-accent-foreground uppercase focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50"
+        >
+          Skip to content
+        </a>
         <ThemeProvider>
           <TechnicalBackdrop />
           <div className="relative z-10">{children}</div>

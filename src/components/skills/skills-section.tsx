@@ -1,5 +1,4 @@
 import { Container } from "@/components/ui/container";
-import { SectionHeading } from "@/components/ui/section-heading";
 import { RevealText } from "@/components/ui/reveal-text";
 import { AmbientLayer } from "@/components/ui/ambient-layer";
 import { skillCategories } from "@/lib/data/skills";
@@ -9,7 +8,12 @@ export function SkillsSection() {
     <section id="skills" className="relative isolate py-20 md:py-28 lg:py-32 xl:py-40">
       <AmbientLayer seed="skills" variant="sparse" scale={0.55} allowLarge={false} />
       <Container>
-        <SectionHeading index="02" eyebrow="Toolbox" title="Skills" />
+        <RevealText as="div">
+          <div className="flex items-baseline gap-3 border-b border-border pb-6">
+            <span className="font-mono text-xs text-muted">04</span>
+            <h2 className="font-display text-heading font-medium tracking-tight">Skills</h2>
+          </div>
+        </RevealText>
 
         <div className="mt-12 grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           {skillCategories.map((category, i) => (

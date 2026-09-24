@@ -17,7 +17,10 @@ export function InteractiveLink({
   className?: string;
   onClick?: MouseEventHandler<HTMLAnchorElement>;
 }) {
-  const classes = `group relative inline-flex items-center gap-2 rounded-sm font-mono text-xs tracking-widest uppercase transition-transform duration-300 ease-out hover:-translate-y-0.5 focus-visible:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none ${className}`;
+  // -my-1.5/py-1.5 cancel out visually (net position unchanged) but widen the
+  // actual tappable box — the visible line is ~20px tall on its own, under a
+  // comfortable touch-target minimum.
+  const classes = `group relative -my-1.5 inline-flex items-center gap-2 rounded-sm py-1.5 font-mono text-xs tracking-widest uppercase transition-transform duration-300 ease-out hover:-translate-y-0.5 focus-visible:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none ${className}`;
 
   const content = (
     <>

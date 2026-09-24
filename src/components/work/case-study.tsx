@@ -127,7 +127,7 @@ export function CaseStudy({
             System {pad(position)} of {pad(total)} · {project.type} · {project.stage}
           </p>
           <h1 className="font-display text-heading mt-3 font-medium tracking-tight">{project.title}</h1>
-          <p className="text-lead mt-5 max-w-2xl text-muted">{project.oneLiner}</p>
+          <p className="mt-5 max-w-2xl text-lg text-muted">{project.oneLiner}</p>
           <p className="mt-6 font-mono text-xs text-muted">{project.stack.join(" · ")}</p>
           <div className="mt-5">
             <InteractiveLink href={project.github} external>
@@ -148,7 +148,7 @@ export function CaseStudy({
                   {section.label}
                 </h2>
               </div>
-              <div>{section.content}</div>
+              <div className="min-w-0">{section.content}</div>
             </section>
           ))}
         </div>
