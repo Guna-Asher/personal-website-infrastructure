@@ -6,7 +6,7 @@ export default function NotFound() {
     <main className="flex min-h-screen flex-col justify-center">
       <Container>
         <p className="font-mono text-sm tracking-widest text-muted uppercase">404</p>
-        <h1 className="font-display text-heading mt-3 max-w-2xl font-medium tracking-tight">
+        <h1 className="font-display text-heading mt-3 max-w-2xl font-semibold tracking-tight">
           This page doesn&apos;t exist.
         </h1>
         <p className="mt-4 max-w-xl text-muted">

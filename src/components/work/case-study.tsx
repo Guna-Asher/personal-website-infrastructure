@@ -12,6 +12,10 @@ function pad(n: number) {
   return String(n).padStart(2, "0");
 }
 
+function slugify(label: string) {
+  return label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
 type Section = { label: string; content: ReactNode };
 
 /**
@@ -132,7 +136,7 @@ export function CaseStudy({
           <p className="mt-2 font-mono text-xs tracking-widest text-muted uppercase">
             System {pad(position)} of {pad(total)} · {project.type} · {project.stage}
           </p>
-          <h1 className="font-display text-heading mt-3 font-medium tracking-tight">{project.title}</h1>
+          <h1 className="font-display text-heading mt-3 font-semibold tracking-tight">{project.title}</h1>
           <p className="mt-5 max-w-2xl text-lg text-muted">{project.oneLiner}</p>
           <MetaList items={project.stack} className="mt-6 font-mono text-xs text-muted" />
           <div className="mt-5">
@@ -142,18 +146,37 @@ export function CaseStudy({
           </div>
         </header>
 
-        <div className="mt-16">
-          {sections.map((section, i) => (
-            <section
-              key={section.label}
-              className="grid gap-4 border-t border-border py-10 first:border-t-0 first:pt-0 md:grid-cols-[8rem_1fr] md:gap-10 md:py-12 md:first:pt-0"
-            >
-              <h2 className="font-mono text-xs tracking-widest text-muted uppercase">
-                {pad(i + 1)} <span className="text-accent/70" aria-hidden>/</span> {section.label}
-              </h2>
-              <div className="min-w-0">{section.content}</div>
-            </section>
-          ))}
+        <div className="mt-16 lg:grid lg:grid-cols-[13rem_1fr] lg:gap-16">
+          <aside className="hidden lg:block">
+            <p className="font-mono text-[11px] tracking-widest text-muted/70 uppercase">On this page</p>
+            <nav className="mt-4 flex flex-col gap-1" aria-label="Case study sections">
+              {sections.map((section, i) => (
+                <a
+                  key={section.label}
+                  href={`#${slugify(section.label)}`}
+                  className="rounded-sm py-1 font-mono text-xs tracking-widest text-muted uppercase transition-colors hover:text-accent focus-visible:text-accent focus-visible:outline-none"
+                >
+                  {pad(i + 1)} <span className="text-accent/70" aria-hidden>/</span> {section.label}
+                </a>
+              ))}
+            </nav>
+          </aside>
+
+          <div>
+            {sections.map((section, i) => (
+              <section
+                key={section.label}
+                id={slugify(section.label)}
+                className="grid gap-4 border-t border-border py-10 first:border-t-0 first:pt-0 md:grid-cols-[8rem_1fr] md:gap-10 md:py-12 md:first:pt-0 lg:grid-cols-[6rem_1fr]"
+              >
+                <h2 className="font-mono text-xs tracking-widest text-muted uppercase">
+                  {pad(i + 1)} <span className="text-accent/70" aria-hidden>/</span>{" "}
+                  <span className="lg:hidden">{section.label}</span>
+                </h2>
+                <div className="min-w-0">{section.content}</div>
+              </section>
+            ))}
+          </div>
         </div>
 
         <div className="mt-16 flex flex-col gap-8 border-t border-border pt-10 sm:flex-row sm:items-start sm:justify-between">

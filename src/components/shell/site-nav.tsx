@@ -10,11 +10,11 @@ import { site } from "@/lib/data/site";
  */
 export function SiteNav() {
   return (
-    <header className="border-b border-border">
+    <header className="sticky top-0 z-20 border-b border-border bg-surface">
       <Container className="flex h-16 items-center justify-between md:h-20">
         <Link
           href="/"
-          className="rounded-sm font-display text-lg font-medium tracking-tight focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+          className="rounded-sm font-display text-lg font-semibold tracking-tight focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
         >
           {site.initials}
           <span className="text-accent">.</span>

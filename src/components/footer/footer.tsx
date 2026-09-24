@@ -12,9 +12,12 @@ const footerVars = {
   "--color-fg": "#f1efe6",
   "--color-muted": "#97948a",
   "--color-border": "rgba(241, 239, 230, 0.14)",
-  "--color-surface": "rgba(241, 239, 230, 0.06)",
+  "--color-border-strong": "rgba(241, 239, 230, 0.22)",
+  "--color-surface": "#1a221d",
+  "--color-surface-2": "#212b24",
   "--color-accent": "#71b491",
   "--color-accent-fg": "#0f1512",
+  "--color-accent-secondary": "#d3a35a",
   "--ambient-symbol-color": "#f1efe6",
   "--ambient-theme-boost": 0.06,
 } as CSSProperties;
@@ -30,7 +33,7 @@ export function Footer() {
         <div className="grid gap-16 border-b border-border pb-16 lg:grid-cols-[2fr_1fr_1fr]">
           <div>
             <p className="font-mono text-xs tracking-widest text-muted uppercase">{site.role}</p>
-            <h2 className="font-display text-statement mt-4 font-medium tracking-tight">
+            <h2 className="font-display text-statement mt-4 font-semibold tracking-tight">
               {site.name}
             </h2>
             <p className="mt-6 max-w-sm text-muted">

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Container } from "@/components/ui/container";
 import { RevealText } from "@/components/ui/reveal-text";
 import { AmbientLayer } from "@/components/ui/ambient-layer";
-import { ProjectIndexRow } from "@/components/work/project-index-row";
+import { ProjectIndexRow, ROW_GRID } from "@/components/work/project-index-row";
 import { SkillsSection } from "@/components/skills/skills-section";
 import { projects } from "@/lib/data/projects";
 
@@ -19,7 +19,7 @@ export default function WorkPage() {
         <Container className="py-20 md:py-28">
           <RevealText as="div">
             <p className="font-mono text-sm tracking-widest text-muted uppercase">Work</p>
-            <p className="font-display text-lead mt-4 max-w-2xl font-medium tracking-tight">
+            <p className="font-display text-lead mt-4 max-w-2xl font-semibold tracking-tight">
               I&apos;m early in my career and I&apos;d rather show that honestly through working systems
               than dress it up.
             </p>
@@ -32,6 +32,12 @@ export default function WorkPage() {
       </section>
 
       <Container>
+        <div className={`hidden border-b border-border-strong pb-3 lg:grid ${ROW_GRID}`}>
+          <span className="font-mono text-[11px] tracking-widest text-muted/70 uppercase">Index</span>
+          <span className="font-mono text-[11px] tracking-widest text-muted/70 uppercase">System</span>
+          <span className="font-mono text-[11px] tracking-widest text-muted/70 uppercase">Type</span>
+          <span className="font-mono text-[11px] tracking-widest text-muted/70 uppercase">Stage</span>
+        </div>
         <ol className="list-none">
           {projects.map((project, i) => (
             <ProjectIndexRow

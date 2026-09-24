@@ -5,13 +5,13 @@ import { skillCategories } from "@/lib/data/skills";
 
 export function SkillsSection() {
   return (
-    <section id="skills" className="relative isolate py-20 md:py-28 lg:py-32 xl:py-40">
+    <section id="skills" className="relative isolate bg-surface py-20 md:py-28 lg:py-32 xl:py-40">
       <AmbientLayer seed="skills" variant="sparse" scale={0.55} allowLarge={false} />
       <Container>
         <RevealText as="div">
           <div className="flex items-baseline gap-3 border-b border-border pb-6">
             <span className="font-mono text-xs text-muted">04</span>
-            <h2 className="font-display text-heading font-medium tracking-tight">Skills</h2>
+            <h2 className="font-display text-heading font-semibold tracking-tight">Skills</h2>
           </div>
         </RevealText>
 
@@ -24,7 +24,7 @@ export function SkillsSection() {
               <ul className="mt-5 space-y-3">
                 {category.skills.map((skill) => (
                   <li key={skill.name}>
-                    <span className="font-display cursor-default text-lg font-medium tracking-tight decoration-accent decoration-2 underline-offset-4 transition-all hover:underline">
+                    <span className="font-display cursor-default text-lg font-semibold tracking-tight decoration-accent decoration-2 underline-offset-4 transition-all hover:underline">
                       {skill.name}
                     </span>
                   </li>

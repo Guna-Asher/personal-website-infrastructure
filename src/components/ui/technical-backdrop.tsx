@@ -1,12 +1,28 @@
+const GRAIN_SVG = `<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'>
+  <filter id='n'>
+    <feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch' />
+    <feColorMatrix type='matrix' values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.5 0' />
+  </filter>
+  <rect width='100%' height='100%' filter='url(#n)' />
+</svg>`;
+
+const GRAIN_URL = `url("data:image/svg+xml,${encodeURIComponent(GRAIN_SVG)}")`;
+
+/**
+ * A quiet paper-grain texture rather than an obvious dot-grid pattern.
+ * Rendered as mid-gray noise with `mix-blend-mode: overlay` so the same
+ * asset reads correctly against both a light and a dark background instead
+ * of needing a separate light/dark variant.
+ */
 export function TechnicalBackdrop() {
   return (
     <div
       aria-hidden
       className="pointer-events-none fixed inset-0 z-0 opacity-[0.05]"
       style={{
-        backgroundImage: "radial-gradient(currentColor 1px, transparent 1px)",
-        backgroundSize: "32px 32px",
-        color: "var(--color-fg)",
+        backgroundImage: GRAIN_URL,
+        backgroundSize: "180px 180px",
+        mixBlendMode: "overlay",
       }}
     />
   );
