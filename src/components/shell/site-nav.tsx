@@ -21,9 +21,13 @@ export function SiteNav() {
         </Link>
 
         <nav className="flex items-center gap-6" aria-label="Primary">
+          {/* SiteNav only ever renders on pages under /work, so "Work" can
+              simply read as the current-section indicator — no pathname
+              check needed. */}
           <Link
             href="/work"
-            className="rounded-sm text-sm text-muted transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+            aria-current="true"
+            className="rounded-sm text-sm text-accent transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
           >
             Work
           </Link>

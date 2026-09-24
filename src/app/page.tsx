@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { InteractiveLink } from "@/components/ui/interactive-link";
+import { MetaList } from "@/components/ui/meta-list";
 import { RevealText } from "@/components/ui/reveal-text";
 import { AmbientLayer } from "@/components/ui/ambient-layer";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
@@ -38,8 +39,10 @@ export default function Home() {
                 <dd>Open to work</dd>
                 <dt className="tracking-widest text-muted uppercase">Location</dt>
                 <dd>{site.location}</dd>
-                <dt className="tracking-widest text-muted uppercase">Infra</dt>
-                <dd>Docker · Nginx · EC2 · GitHub Actions</dd>
+                <dt className="tracking-widest text-muted uppercase">Running on</dt>
+                <dd>
+                  <MetaList items={["Docker", "Nginx", "EC2", "GitHub Actions"]} />
+                </dd>
               </dl>
 
               <div className="flex flex-col gap-3">

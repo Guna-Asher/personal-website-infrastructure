@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { InteractiveLink } from "@/components/ui/interactive-link";
+import { MetaList } from "@/components/ui/meta-list";
 import { ArchitectureDiagram } from "./architecture-diagram";
 import { DecisionBlock } from "./decision-block";
 import type { ProjectCaseStudy } from "@/lib/data/projects";
@@ -127,12 +128,13 @@ export function CaseStudy({
     <article>
       <Container className="py-16 md:py-24">
         <header>
-          <p className="font-mono text-xs tracking-widest text-muted uppercase">
+          <p className="font-mono text-xs text-muted/60">~/work/{project.slug}</p>
+          <p className="mt-2 font-mono text-xs tracking-widest text-muted uppercase">
             System {pad(position)} of {pad(total)} · {project.type} · {project.stage}
           </p>
           <h1 className="font-display text-heading mt-3 font-medium tracking-tight">{project.title}</h1>
           <p className="mt-5 max-w-2xl text-lg text-muted">{project.oneLiner}</p>
-          <p className="mt-6 font-mono text-xs text-muted">{project.stack.join(" · ")}</p>
+          <MetaList items={project.stack} className="mt-6 font-mono text-xs text-muted" />
           <div className="mt-5">
             <InteractiveLink href={project.github} external>
               View source on GitHub
@@ -146,12 +148,9 @@ export function CaseStudy({
               key={section.label}
               className="grid gap-4 border-t border-border py-10 first:border-t-0 first:pt-0 md:grid-cols-[8rem_1fr] md:gap-10 md:py-12 md:first:pt-0"
             >
-              <div className="flex items-baseline gap-3 md:block">
-                <span className="font-mono text-xs text-muted">{pad(i + 1)}</span>
-                <h2 className="font-mono text-xs tracking-widest text-muted uppercase md:mt-2">
-                  {section.label}
-                </h2>
-              </div>
+              <h2 className="font-mono text-xs tracking-widest text-muted uppercase">
+                {pad(i + 1)} <span className="text-accent/70" aria-hidden>/</span> {section.label}
+              </h2>
               <div className="min-w-0">{section.content}</div>
             </section>
           ))}

@@ -1,26 +1,32 @@
 @import "tailwindcss";
 
 :root {
-  --color-bg: #faf9f6;
-  --color-fg: #131311;
-  --color-muted: #6b6b64;
-  --color-border: rgba(19, 19, 17, 0.1);
-  --color-surface: rgba(19, 19, 17, 0.04);
-  --color-accent: #2957d6;
-  --color-accent-fg: #ffffff;
-  --ambient-symbol-color: #171717;
+  /* Warm stone/paper, not pure white — near-charcoal text, not pure black. */
+  --color-bg: #f7f5ef;
+  --color-fg: #1c1a16;
+  --color-muted: #6d6a60;
+  --color-border: rgba(28, 26, 22, 0.1);
+  --color-surface: rgba(28, 26, 22, 0.04);
+  /* Deep technical green — the primary identity accent. */
+  --color-accent: #2c5c47;
+  --color-accent-fg: #f7f5ef;
+  /* Muted amber — used sparingly, for real semantic emphasis only. */
+  --color-accent-secondary: #7a5220;
+  --ambient-symbol-color: #1c1a16;
   --ambient-theme-boost: 0;
 }
 
 [data-theme="dark"] {
-  --color-bg: #0a0b0d;
-  --color-fg: #f2f1ec;
-  --color-muted: #8c8d92;
-  --color-border: rgba(242, 241, 236, 0.12);
-  --color-surface: rgba(242, 241, 236, 0.05);
-  --color-accent: #5b93ff;
-  --color-accent-fg: #0a0b0d;
-  --ambient-symbol-color: #f5f5f5;
+  /* Deep charcoal with a whisper of green, not pure black. */
+  --color-bg: #0f1512;
+  --color-fg: #f1efe6;
+  --color-muted: #97948a;
+  --color-border: rgba(241, 239, 230, 0.12);
+  --color-surface: rgba(241, 239, 230, 0.05);
+  --color-accent: #71b491;
+  --color-accent-fg: #0f1512;
+  --color-accent-secondary: #d3a35a;
+  --ambient-symbol-color: #f1efe6;
   --ambient-theme-boost: 0.06;
 }
 
@@ -32,6 +38,7 @@
   --color-surface: var(--color-surface);
   --color-accent: var(--color-accent);
   --color-accent-foreground: var(--color-accent-fg);
+  --color-accent-secondary: var(--color-accent-secondary);
   --color-ambient: var(--ambient-symbol-color);
   --font-display: var(--font-space-grotesk);
   --font-sans: var(--font-inter);

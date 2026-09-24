@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { RevealText } from "@/components/ui/reveal-text";
 import { CornerMarks } from "@/components/ui/corner-marks";
 import { InteractiveLink } from "@/components/ui/interactive-link";
+import { MetaList } from "@/components/ui/meta-list";
 import type { ProjectCaseStudy } from "@/lib/data/projects";
 
 export function ProjectIndexRow({
@@ -40,12 +41,15 @@ export function ProjectIndexRow({
               >
                 {project.title}
               </h3>
-              <p className="mt-2 font-mono text-xs tracking-widest text-muted uppercase">
+              <p className="mt-1 font-mono text-xs text-muted/60">
+                ~/work/{project.slug}
+              </p>
+              <p className="mt-3 font-mono text-xs tracking-widest text-muted uppercase">
                 {project.type} · {project.stage}
               </p>
               <p className="mt-4 max-w-lg text-muted">{project.oneLiner}</p>
               <p className="mt-3 max-w-lg font-mono text-xs text-muted/80">{project.flow}</p>
-              <p className="mt-4 font-mono text-xs text-muted">{project.stack.join(" · ")}</p>
+              <MetaList items={project.stack} className="mt-4 font-mono text-xs text-muted" />
               <p className="mt-5 inline-flex items-center gap-2 font-mono text-xs tracking-widest text-muted uppercase transition-colors group-hover/link:text-accent group-focus-visible/link:text-accent">
                 View case study
                 <ArrowRight

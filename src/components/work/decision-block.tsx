@@ -18,7 +18,9 @@ export function DecisionBlock({ decision, index }: { decision: EngineeringDecisi
         </div>
         {decision.tradeoff && (
           <div>
-            <dt className="font-mono text-[11px] tracking-widest text-muted uppercase">Tradeoff</dt>
+            <dt className="font-mono text-[11px] tracking-widest text-accent-secondary uppercase">
+              Tradeoff
+            </dt>
             <dd className="mt-1 text-muted">{decision.tradeoff}</dd>
           </div>
         )}

@@ -8,14 +8,14 @@ import { AmbientLayer } from "@/components/ui/ambient-layer";
 import { navLinks, site } from "@/lib/data/site";
 
 const footerVars = {
-  "--color-bg": "#0a0b0d",
-  "--color-fg": "#f2f1ec",
-  "--color-muted": "#8c8d92",
-  "--color-border": "rgba(242, 241, 236, 0.14)",
-  "--color-surface": "rgba(242, 241, 236, 0.06)",
-  "--color-accent": "#5b93ff",
-  "--color-accent-fg": "#0a0b0d",
-  "--ambient-symbol-color": "#f5f5f5",
+  "--color-bg": "#0f1512",
+  "--color-fg": "#f1efe6",
+  "--color-muted": "#97948a",
+  "--color-border": "rgba(241, 239, 230, 0.14)",
+  "--color-surface": "rgba(241, 239, 230, 0.06)",
+  "--color-accent": "#71b491",
+  "--color-accent-fg": "#0f1512",
+  "--ambient-symbol-color": "#f1efe6",
   "--ambient-theme-boost": 0.06,
 } as CSSProperties;
 
@@ -82,9 +82,12 @@ export function Footer() {
         </div>
 
         <div className="mt-8 flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
-          <p className="font-mono text-xs tracking-widest text-muted uppercase">
-            © {year} {site.name} · built with Next.js
-          </p>
+          <div>
+            <p className="font-mono text-xs tracking-widest text-muted uppercase">
+              © {year} {site.name} · built with Next.js
+            </p>
+            <p className="mt-2 font-mono text-xs text-muted/70">guna@portfolio:~$ exit</p>
+          </div>
 
           <button
             type="button"
