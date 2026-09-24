@@ -14,11 +14,11 @@ export const metadata: Metadata = {
 export default function WorkPage() {
   return (
     <>
-      <section className="relative isolate">
+      <section className="relative isolate border-b border-border">
         <AmbientLayer seed="work" variant="sparse" />
-        <Container className="py-20 md:py-28">
+        <Container className="py-16 md:py-20">
           <RevealText as="div">
-            <p className="font-mono text-sm tracking-widest text-muted uppercase">Work</p>
+            <p className="font-mono text-xs tracking-widest text-muted/70 uppercase">Work / Systems</p>
             <p className="font-display text-lead mt-4 max-w-2xl font-semibold tracking-tight">
               I&apos;m early in my career and I&apos;d rather show that honestly through working systems
               than dress it up.
@@ -32,10 +32,10 @@ export default function WorkPage() {
       </section>
 
       <Container>
-        <div className={`hidden border-b border-border-strong pb-3 lg:grid ${ROW_GRID}`}>
+        <div className={`hidden border-b border-border-strong px-4 pt-8 pb-3 lg:grid ${ROW_GRID}`}>
           <span className="font-mono text-[11px] tracking-widest text-muted/70 uppercase">Index</span>
           <span className="font-mono text-[11px] tracking-widest text-muted/70 uppercase">System</span>
-          <span className="font-mono text-[11px] tracking-widest text-muted/70 uppercase">Type</span>
+          <span className="font-mono text-[11px] tracking-widest text-muted/70 uppercase">Summary</span>
           <span className="font-mono text-[11px] tracking-widest text-muted/70 uppercase">Stage</span>
         </div>
         <ol className="list-none">
