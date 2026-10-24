@@ -41,10 +41,10 @@ export const projects: ProjectCaseStudy[] = [
   {
     slug: "stranger-club",
     title: "Stranger Club",
-    type: "Product — Full-Stack Application",
+    type: "Full-stack application",
     stage: "MVP",
     oneLiner:
-      "A cricket-match registration platform that replaced a Google Form, a UPI QR code, and WhatsApp screenshots with one system — live slot availability, a FIFO waitlist, and organiser-reviewed payments.",
+      "A cricket-match registration platform that replaced a Google Form, a UPI QR code, and WhatsApp screenshots with one system that handles live slot availability, a FIFO waitlist, and organiser-reviewed payments.",
     flow: "registration → capacity check (BEGIN IMMEDIATE) → SQLite → SSE broadcast",
     stack: ["React", "Vite", "FastAPI", "Python", "SQLite", "SQLAlchemy", "Server-Sent Events", "Docker"],
     github: "https://github.com/Guna-Asher/Stranger-Club",
@@ -109,7 +109,7 @@ export const projects: ProjectCaseStudy[] = [
       {
         title: "FIFO waitlist, enforced server-side",
         decision:
-          "Promoting a waitlisted player checks that they're genuinely first in the queue by creation time, and re-checks capacity at the moment of promotion, not just at the moment they registered.",
+          "Promoting a waitlisted player checks that they're genuinely first in the queue by creation time, and re-checks capacity at the moment of promotion, not when they first registered.",
         reason:
           "A payment can arrive late, after the event has already filled from other confirmed players. When that happens, the registration gets demoted back to waitlisted instead of double-booking the event or silently dropping the payment.",
       },
@@ -136,14 +136,14 @@ export const projects: ProjectCaseStudy[] = [
       "This is the MVP scope from the project's own roadmap, decided up front.",
     ],
     result:
-      "Built and validated end to end, including a run against a real cricket match — registration, waitlist handling, and payment verification all worked with real players, not just local test data. I haven't run it as an ongoing service beyond that one match. It's built and proven, not something I operate day to day.",
+      "Built and tested against a real cricket match. Registration, waitlist handling, and payment verification all worked with real players rather than local test data. I haven't run it as an ongoing service beyond that one match. It's built and proven, not something I operate day to day.",
     lessons:
-      "The most useful thing I did here wasn't picking SQLite over Postgres — it was making that decision reversible on purpose, by leaving the exact swap point documented in the code instead of treating the database choice as permanent. I'd apply the same thinking to the payment flow next: proof-of-payment review works fine at one-organiser, weekly-event volume, but it won't scale past that without real payment integration. I already know that.",
+      "Picking SQLite over Postgres mattered less than making that choice reversible. I left the exact swap point documented in the code instead of treating the database as permanent. The payment flow needs the same treatment next: proof-of-payment review works fine at one-organiser, weekly-event volume, but it won't scale past that without real payment integration.",
   },
   {
     slug: "deployment-portal",
     title: "Self-Service Deployment Portal",
-    type: "Platform — Internal Tooling",
+    type: "Internal tooling",
     stage: "Shipped",
     oneLiner:
       "An internal dashboard for deploying Dockerized applications without SSH access — register a version, click deploy, and roll back safely if it fails.",
@@ -202,7 +202,7 @@ export const projects: ProjectCaseStudy[] = [
         decision:
           "Deployments maintain a relationship to the deployment they replaced, and a separate deployment-log model records each step of a deployment — image pull, container stop, container removal, container start, and any error.",
         reason:
-          "This is what makes rollback traceable instead of just \"run the old image again,\" and gives visibility into what actually happened during a failed deployment. Both are built and working, not just planned.",
+          "This is what makes rollback traceable instead of re-running the old image and hoping, and gives visibility into what actually happened during a failed deployment. Both are built and working rather than planned.",
       },
     ],
     deployment:
@@ -217,7 +217,7 @@ export const projects: ProjectCaseStudy[] = [
         symptom: "Not supported URL scheme http+docker",
         cause: "Docker SDK for Python incompatible with the host Docker daemon across environments.",
         fix: "Replaced all container operations with direct Docker CLI invocations via subprocess.",
-        lesson: "The \"proper\" SDK wasn't the safer choice here — the CLI, wrapped carefully, was more portable and easier to debug.",
+        lesson: "The CLI, wrapped carefully, turned out more portable and easier to debug than the official SDK.",
       },
       {
         symptom: "password cannot be longer than 72 bytes",
@@ -229,18 +229,18 @@ export const projects: ProjectCaseStudy[] = [
         symptom: "unknown flag --detach on docker create",
         cause: "Incorrect assumption about which Docker CLI subcommand accepts which flags.",
         fix: "Switched to docker run --detach.",
-        lesson: "CLI-wrapping requires exact command shapes — there's no compiler to catch a wrong flag ahead of time.",
+        lesson: "CLI-wrapping needs exact command shapes. Nothing catches a wrong flag before runtime.",
       },
     ],
     result:
-      "Works end to end as an internal tool: registering an application, registering a version, deploying it, and rolling it back all happen through the dashboard, with every step logged. I've built and tested it myself, thoroughly — it hasn't been used by a team yet.",
+      "Works as an internal tool: registering an application, registering a version, deploying it, and rolling it back all happen through the dashboard, with every step logged. I've built and tested it myself, but it hasn't been used by a team yet.",
     lessons:
-      "The Docker SDK failure is the clearest lesson here: reaching for the \"proper\" SDK wasn't actually the safer choice. The CLI, wrapped carefully through subprocess calls, turned out more portable across Docker versions and easier to debug when something went wrong. I've tried to keep being upfront about what's missing — no RBAC, CI/CD still in progress — instead of mentioning it once and moving on.",
+      "The Docker SDK failure is the clearest lesson here: the official SDK was not the safer choice. The CLI, wrapped carefully through subprocess calls, turned out more portable across Docker versions and easier to debug when something went wrong. The gaps are still gaps, and I have kept them in the write-up: no RBAC, and CI/CD is still in progress.",
   },
   {
     slug: "aws-log-monitoring",
     title: "AWS Log Monitoring & Archival System",
-    type: "Automation — Cloud Pipeline",
+    type: "Cloud automation",
     stage: "Shipped",
     oneLiner:
       "A small scheduled pipeline that pulls error lines out of an EC2 application log and archives them to S3 every hour, authenticated through an IAM instance role instead of stored keys.",
@@ -248,7 +248,7 @@ export const projects: ProjectCaseStudy[] = [
     stack: ["Python", "Docker", "AWS EC2", "AWS S3", "AWS IAM", "cron", "GitHub Actions"],
     github: "https://github.com/Guna-Asher/aws-log-monitoring-project",
     problem:
-      "Finding error signals in application logs on an EC2 instance usually means someone SSHing in and grepping through a file by hand — manual, easy to forget, and the log itself is ephemeral if the instance is ever replaced. This project automates that one task: pull out error lines and archive them somewhere durable, on a schedule, without a person doing it.",
+      "Finding error signals in application logs on an EC2 instance usually means someone SSHing in and grepping through a file by hand. That's manual, easy to forget, and the log disappears if the instance is replaced. This project automates that one task: pull out error lines and archive them somewhere durable, on a schedule, without a person doing it.",
     architecture: {
       summary:
         "A single Python script reads the local application log, keeps only lines containing ERROR, and uploads them to S3 as a timestamped object so nothing gets overwritten. It runs inside a Docker container for environment parity between a laptop and the EC2 host, and cron triggers it hourly. A GitHub Actions workflow validates that the Docker image still builds on every push.",
@@ -275,7 +275,7 @@ Build check: GitHub Actions, on every push`,
         decision:
           "The EC2 instance carries an IAM role scoped to s3:PutObject on exactly one bucket. boto3 picks up temporary credentials automatically from the instance metadata service.",
         reason:
-          "There is no AWS access key anywhere in the code, the environment, or a credentials file — real least-privilege practice on a project small enough that it would have been easy to skip and just hardcode a key. It wasn't skipped.",
+          "There is no AWS access key in the code, the environment, or a credentials file. It would have been easy to hardcode a key on a project this small, but setting up the instance role was the same amount of work.",
       },
     ],
     deployment:
@@ -283,6 +283,6 @@ Build check: GitHub Actions, on every push`,
     result:
       "Runs the intended loop successfully: filters error lines, uploads a timestamped archive to S3, on schedule, with no credential ever touching the code or the instance's filesystem. It has not been extended past that one loop — one log file, one bucket, substring matching rather than structured log parsing, and no retry or alerting if an individual upload fails.",
     lessons:
-      "The habit I want to keep repeating: default to an IAM role instead of a static key, even on something this small. The project didn't need to be bigger to get that right.",
+      "The habit worth keeping: default to an IAM role instead of a static key, even on something this small. It didn't take any extra effort here.",
   },
 ];

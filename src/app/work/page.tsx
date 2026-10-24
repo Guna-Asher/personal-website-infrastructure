@@ -6,7 +6,8 @@ import { projects } from "@/lib/data/projects";
 
 export const metadata: Metadata = {
   title: "Systems",
-  description: "Three systems Guna R has built, deployed, and operated end to end.",
+  description:
+    "Three projects Guna R has built and deployed, with the architecture and decisions behind each one.",
 };
 
 export default function WorkPage() {
@@ -22,9 +23,8 @@ export default function WorkPage() {
         }
         standfirst={
           <>
-            Three projects, each built, deployed, and operated end to end. What follows is what
-            each one actually does — the problem, the architecture, the decisions, and what
-            I&apos;d change.
+            Each write-up covers what the project does, how it&apos;s built, and the decisions I
+            made along the way. Where I&apos;d do something differently now, I&apos;ve said so.
           </>
         }
       />

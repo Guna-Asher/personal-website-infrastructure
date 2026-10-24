@@ -3,13 +3,13 @@ import { Container } from "@/components/ui/container";
 import { Link } from "@/components/ui/link";
 import { PageHeader } from "@/components/ui/page-header";
 import { Section } from "@/components/ui/section";
-import { projects } from "@/lib/data/projects";
+import { projects, type ProjectCaseStudy } from "@/lib/data/projects";
 import { skillCategories } from "@/lib/data/skills";
 
 export const metadata: Metadata = {
   title: "Approach",
   description:
-    "Three habits Guna R applies to every system — reversible decisions, least privilege by default, and saying what is missing.",
+    "How Guna R works: leaving decisions reversible, scoping credentials on small projects, and documenting what's missing.",
 };
 
 function findProject(slug: string) {
@@ -22,29 +22,37 @@ const strangerClub = findProject("stranger-club");
 const portal = findProject("deployment-portal");
 const logMonitoring = findProject("aws-log-monitoring");
 
+function findConstraint(project: ProjectCaseStudy, needle: string) {
+  const constraint = project.constraints?.find((c) => c.includes(needle));
+  if (!constraint) {
+    throw new Error(`/approach references a missing constraint on ${project.slug}: ${needle}`);
+  }
+  return constraint;
+}
+
 // Each principle has to cite a real decision from a real system. The quote is
 // read out of projects.ts rather than retyped, so the page cannot drift from
 // the case study it is citing.
 const principles = [
   {
     index: "01",
-    title: "Make the decision reversible, on purpose",
-    body: "Picking the simpler option is easy. The part worth doing is leaving the exit visible — writing down, next to the code, exactly what would have to change if the constraint changes. A decision with a documented swap point is a small change later instead of a rewrite.",
+    title: "I try to leave decisions reversible",
+    body: "Picking the simpler option is easy. The useful part is writing down what would have to change if the constraint changes, right next to the code it affects. That turns a future migration into a small edit instead of a rewrite.",
     quote: strangerClub.lessons,
     source: strangerClub,
   },
   {
     index: "02",
-    title: "Least privilege even when nothing is forcing it",
-    body: "Small projects are where credentials get hardcoded, because nothing is watching and it would work. That is exactly why the habit has to hold at that size — a scoped role on a one-script pipeline costs nothing extra and means there is no key to leak.",
+    title: "I use scoped credentials even on small projects",
+    body: "Small projects are where credentials get hardcoded, because nothing is watching and it would work anyway. I'd rather scope a role to the one action it needs, so there's no key sitting in the repo or on the instance for someone to find later.",
     quote: logMonitoring.lessons,
     source: logMonitoring,
   },
   {
     index: "03",
-    title: "Say what is missing, and keep saying it",
-    body: "Every one of these systems has a gap I know about. Naming them once in a README and then presenting the project as finished is the normal thing to do; carrying them through the write-up is more useful to anyone deciding whether to trust the work.",
-    quote: portal.lessons,
+    title: "I document what's missing",
+    body: "Every project here has gaps I know about. It's easy to mention them once in a README and then write about the project as if it's finished. I'd rather carry them through the whole write-up, so anyone reading can see what they'd be taking on.",
+    quote: findConstraint(portal, "role-based access control"),
     source: portal,
   },
 ];
@@ -54,11 +62,11 @@ export default function ApproachPage() {
     <>
       <PageHeader
         eyebrow="Approach"
-        title={<>Three habits, applied to every system here.</>}
+        title={<>How I work</>}
         standfirst={
           <>
-            Not a philosophy — each of these is a specific thing I did in a specific project, and
-            each one is cited below from the case study it came from.
+            Habits I&apos;ve kept to across these projects. Each one comes from a specific
+            project, linked at the end of the section.
           </>
         }
       />
@@ -73,7 +81,7 @@ export default function ApproachPage() {
                 data-reveal
               >
                 <p className="t-meta text-ink-muted">
-                  {principle.index} <span className="text-clay-graphic">/</span> Principle
+                  {principle.index} <span className="text-clay-graphic">/</span> Habit
                 </p>
                 <h2 className="t-statement mt-5 text-ink">{principle.title}</h2>
                 <p className="t-body mt-6 text-ink-secondary">{principle.body}</p>
@@ -98,7 +106,7 @@ export default function ApproachPage() {
         </div>
       </Container>
 
-      <Section index="04" label="Technical areas" surface="raised" wide>
+      <Section index="04" label="Skills" surface="raised" wide>
         <div className="grid gap-10 border-t border-rule pt-10 md:grid-cols-2 lg:grid-cols-4">
           {skillCategories.map((category, i) => (
             <div

@@ -35,15 +35,15 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const title = "Guna R — Cloud / DevOps";
+const title = "Guna R · Cloud / DevOps";
 const description =
-  "Guna R builds backend systems and the infrastructure that runs them — three systems, documented the way production systems are: decisions, tradeoffs, and failures included.";
+  "Guna R builds backend applications and the infrastructure they run on. Three projects, written up with their architecture, the decisions behind them, and the problems that came up.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: title,
-    template: "%s — Guna R",
+    template: "%s · Guna R",
   },
   description,
   openGraph: {

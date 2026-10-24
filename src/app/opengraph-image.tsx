@@ -3,7 +3,7 @@ import { site } from "@/lib/data/site";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = `${site.name} — ${site.role}`;
+export const alt = `${site.name} · ${site.role}`;
 
 /**
  * Generated at build time, so there is no raster asset in the repo and no
@@ -54,7 +54,7 @@ export default function OpengraphImage() {
         </div>
 
         <div style={{ display: "flex", fontSize: 24, color: "#6b6a63" }}>
-          Three systems, documented the way production systems are.
+          Three projects, with the architecture and decisions behind each one.
         </div>
       </div>
     ),

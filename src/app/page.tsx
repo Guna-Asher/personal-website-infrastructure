@@ -46,13 +46,12 @@ export default function Home() {
               <h1 className="t-display mt-7 text-ink">{site.tagline}</h1>
 
               <p className="t-ui measure-lead mt-8 text-ink-secondary">
-                Three systems, built and deployed end to end, each documented the way a
-                production system is — the architecture, the decisions, the tradeoffs those
-                decisions cost, and the failures that changed them.
+                Here are three projects I&apos;ve built and deployed. Each one includes its
+                architecture, the decisions I made and why, and the problems I hit along the way.
               </p>
 
               <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
-                <Link href="/work">Read the systems</Link>
+                <Link href="/work">See the projects</Link>
                 <Link href="/approach">Approach</Link>
               </div>
             </div>
@@ -79,15 +78,15 @@ export default function Home() {
           click, and it is the thing no other portfolio puts on page one. */}
       <Section
         index="02"
-        label="Specimen"
+        label="A decision in detail"
         surface="raised"
-        lead={<>What a decision looks like here.</>}
+        lead={<>Every project here is written up like this.</>}
       >
         <div data-reveal>
           <p className="t-ui measure-prose text-ink-secondary">
-            Every system above is documented in this shape. This one is from{" "}
-            {strangerClub.title} — the single place in that system where getting the write order
-            right is the whole point.
+            This one is from {strangerClub.title}. It&apos;s the part of that system where the
+            order of database writes actually matters, because getting it wrong means two players
+            end up in the same slot.
           </p>
 
           <div className="mt-10">
@@ -96,7 +95,7 @@ export default function Home() {
 
           <div className="mt-10">
             <Link href={`/work/${strangerClub.slug}`}>
-              Read {strangerClub.title} in full
+              Read the {strangerClub.title} write-up
             </Link>
           </div>
         </div>
@@ -106,8 +105,8 @@ export default function Home() {
           already had and used to bury on one sub-page. */}
       <Section
         index="03"
-        label="Failure & recovery"
-        lead={<>Three things that broke, and what each one taught.</>}
+        label="What broke"
+        lead={<>Problems I ran into building the deployment portal.</>}
       >
         <div className="flex flex-col divide-y divide-rule" data-reveal>
           {(portal.failureRecovery ?? []).map((entry) => (
@@ -127,12 +126,12 @@ export default function Home() {
         </div>
 
         <div className="mt-10">
-          <Link href={`/work/${portal.slug}`}>See where these came from</Link>
+          <Link href={`/work/${portal.slug}`}>Read the full write-up</Link>
         </div>
       </Section>
 
       {/* 05 — Practice. The scannable surface, without a skills bar chart. */}
-      <Section index="04" label="Practice" surface="raised" wide>
+      <Section index="04" label="Skills" surface="raised" wide>
         <div className="grid gap-10 border-t border-rule pt-10 md:grid-cols-2 lg:grid-cols-4">
           {skillCategories.map((category, i) => (
             <div
@@ -164,11 +163,15 @@ export default function Home() {
       </Section>
 
       {/* 06 — Record. Closes without a sales pitch. */}
-      <Section index="05" label="Record" lead={<>Open to work — cloud, DevOps, or backend.</>}>
+      <Section
+        index="05"
+        label="Contact"
+        lead={<>I&apos;m open to work in cloud, DevOps, or backend roles.</>}
+      >
         <div data-reveal>
           <p className="t-ui measure-prose text-ink-secondary">
-            Based in {site.location}. The fastest way to judge whether I&apos;d be useful to you is to
-            read one of the systems above and the decisions inside it.
+            I&apos;m based in {site.location}. The project write-ups above go into more detail
+            than a CV would.
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">

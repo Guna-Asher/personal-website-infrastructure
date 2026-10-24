@@ -18,9 +18,6 @@ export function SiteFooter() {
           <div>
             <p className="t-meta text-ink-muted">{site.role}</p>
             <p className="t-statement mt-4 text-ink">{site.name}</p>
-            <p className="t-ui measure-lead mt-5 text-ink-secondary">
-              Building applications and the infrastructure that keeps them running.
-            </p>
           </div>
 
           <nav aria-label="Explore">

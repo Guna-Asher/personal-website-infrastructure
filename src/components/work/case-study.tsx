@@ -56,7 +56,7 @@ export function CaseStudy({
           <p className="t-body measure-prose text-ink-secondary">
             {project.architecture.summary}
           </p>
-          <p className="t-meta mt-8 text-ink-muted">Fig. 01 — System flow</p>
+          <p className="t-meta mt-8 text-ink-muted">Fig. 01: System flow</p>
           <ArchitectureDiagram diagram={project.architecture.diagram} />
         </>
       ),
@@ -64,7 +64,7 @@ export function CaseStudy({
     ...(project.decisions.length > 0
       ? [
           {
-            label: "Engineering decisions",
+            label: "Decisions",
             content: (
               <div className="flex flex-col gap-8">
                 {project.decisions.map((decision, i) => (
@@ -101,7 +101,7 @@ export function CaseStudy({
     ...(project.failureRecovery && project.failureRecovery.length > 0
       ? [
           {
-            label: "Failure & recovery",
+            label: "What went wrong",
             content: (
               <div className="flex flex-col divide-y divide-rule">
                 {project.failureRecovery.map((entry) => (
@@ -214,7 +214,7 @@ export function CaseStudy({
                   href={`/work/${next.slug}`}
                   className="t-meta group inline-flex items-center gap-2 rounded-sm text-right text-ink-muted transition-colors duration-150 hover:text-clay"
                 >
-                  Next — {next.title}
+                  Next: {next.title}
                   <ArrowRight className="h-3.5 w-3.5 transition-transform duration-150 group-hover:translate-x-0.5" />
                 </NextLink>
               )}
@@ -224,7 +224,7 @@ export function CaseStudy({
                   className="t-meta group inline-flex items-center gap-2 rounded-sm text-ink-muted transition-colors duration-150 hover:text-clay"
                 >
                   <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-150 group-hover:-translate-x-0.5" />
-                  Previous — {previous.title}
+                  Previous: {previous.title}
                 </NextLink>
               )}
             </div>

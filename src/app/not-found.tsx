@@ -9,8 +9,7 @@ export default function NotFound() {
           <p className="t-meta text-ink-muted">Error / 404</p>
           <h1 className="t-statement mt-5 text-ink">This page doesn&apos;t exist.</h1>
           <p className="t-ui measure-lead mt-6 text-ink-secondary">
-            Whatever you were looking for isn&apos;t here — the link may be out of date, or the
-            page never existed.
+            The link might be out of date, or this page may never have existed.
           </p>
           <div className="mt-10 flex flex-wrap gap-x-8 gap-y-4">
             <Link href="/">Return home</Link>
