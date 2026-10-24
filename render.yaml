@@ -1,0 +1,33 @@
+# Render Blueprint.
+#
+# Render builds this repo with the Dockerfile (a Dockerfile at the repo root
+# takes precedence over runtime auto-detection), so the service is declared as
+# a Docker service here to match.
+#
+# A service created through the dashboard keeps its own settings — this file
+# only applies to services created from a Blueprint. The one setting that
+# actually fixes the failed deploy is PORT; see below.
+services:
+  - type: web
+    name: guna-portfolio
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    envVars:
+      # The deploy failed with "no open ports detected" because Render injects
+      # PORT=10000, which overrides the image's own ENV PORT=3000. The server
+      # then listened on 10000 while the image's EXPOSE still declared 3000.
+      # Pinning PORT back to 3000 makes the server, EXPOSE and the container
+      # health check agree on one port.
+      - key: PORT
+        value: "3000"
+      # The standalone server reads HOSTNAME verbatim
+      # (`process.env.HOSTNAME || "0.0.0.0"`), and Linux containers set it to
+      # the container id — which would bind the server to a name nothing can
+      # reach. The Dockerfile pins it too; this keeps it true if that changes.
+      - key: HOSTNAME
+        value: 0.0.0.0
+      # Baked into metadataBase at build time. Set to the live Render URL.
+      - key: NEXT_PUBLIC_SITE_URL
+        sync: false

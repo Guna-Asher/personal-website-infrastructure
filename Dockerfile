@@ -38,9 +38,14 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 USER nextjs
+# Metadata only, and it must agree with PORT. A host that injects its own PORT
+# (Render sets 10000) makes the server listen somewhere this does not describe,
+# so pin PORT to 3000 there rather than leaving the two to disagree.
 EXPOSE 3000
 
+# Probes whatever port the server was actually told to use. Hardcoding 3000
+# left the container permanently unhealthy anywhere PORT was overridden.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD node -e "fetch('http://127.0.0.1:3000/').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+  CMD node -e "const p=process.env.PORT||3000;fetch('http://127.0.0.1:'+p+'/').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
 
 CMD ["node", "server.js"]
