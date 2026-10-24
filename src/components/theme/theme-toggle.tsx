@@ -1,6 +1,6 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun } from "@/components/ui/icons";
 import { useTheme } from "./theme-provider";
 
 export function ThemeToggle() {
@@ -14,16 +14,10 @@ export function ThemeToggle() {
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
       aria-pressed={isDark}
       suppressHydrationWarning
-      className="group relative flex h-9 w-9 items-center justify-center rounded-sm text-muted transition-colors duration-300 ease-out hover:text-foreground focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none cursor-pointer"
+      className="relative flex h-11 w-11 cursor-pointer items-center justify-center rounded-sm text-ink-muted transition-colors duration-150 hover:text-ink"
     >
-      <Sun
-        aria-hidden
-        className="absolute h-4 w-4 scale-100 rotate-0 opacity-100 transition-all duration-300 [[data-theme=dark]_&]:scale-0 [[data-theme=dark]_&]:-rotate-90 [[data-theme=dark]_&]:opacity-0"
-      />
-      <Moon
-        aria-hidden
-        className="absolute h-4 w-4 scale-0 rotate-90 opacity-0 transition-all duration-300 [[data-theme=dark]_&]:scale-100 [[data-theme=dark]_&]:rotate-0 [[data-theme=dark]_&]:opacity-100"
-      />
+      <Sun className="absolute h-4 w-4 scale-100 opacity-100 transition-all duration-200 [[data-theme=dark]_&]:scale-75 [[data-theme=dark]_&]:opacity-0" />
+      <Moon className="absolute h-4 w-4 scale-75 opacity-0 transition-all duration-200 [[data-theme=dark]_&]:scale-100 [[data-theme=dark]_&]:opacity-100" />
     </button>
   );
 }

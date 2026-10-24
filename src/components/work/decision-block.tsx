@@ -1,27 +1,31 @@
 import type { EngineeringDecision } from "@/lib/data/projects";
 
-export function DecisionBlock({ decision, index }: { decision: EngineeringDecision; index: number }) {
+export function DecisionBlock({
+  decision,
+  index,
+}: {
+  decision: EngineeringDecision;
+  index: number;
+}) {
   return (
-    <div className="border-l-2 border-border py-1 pl-5">
+    <div className="border-l-2 border-rule-strong py-1 pl-5">
       <div className="flex items-baseline gap-3">
-        <span className="font-mono text-xs text-muted">{String(index).padStart(2, "0")}</span>
-        <h3 className="font-display text-lg font-semibold tracking-tight">{decision.title}</h3>
+        <span className="t-code text-clay-graphic">{String(index).padStart(2, "0")}</span>
+        <h3 className="t-title text-ink">{decision.title}</h3>
       </div>
-      <dl className="mt-3 flex flex-col gap-3 text-sm">
+      <dl className="mt-4 flex flex-col gap-4">
         <div>
-          <dt className="font-mono text-[11px] tracking-widest text-muted uppercase">Decision</dt>
-          <dd className="mt-1 text-muted">{decision.decision}</dd>
+          <dt className="t-meta text-ink-muted">Decision</dt>
+          <dd className="t-ui mt-1.5 text-ink-secondary">{decision.decision}</dd>
         </div>
         <div>
-          <dt className="font-mono text-[11px] tracking-widest text-muted uppercase">Reason</dt>
-          <dd className="mt-1 text-muted">{decision.reason}</dd>
+          <dt className="t-meta text-ink-muted">Reason</dt>
+          <dd className="t-ui mt-1.5 text-ink-secondary">{decision.reason}</dd>
         </div>
         {decision.tradeoff && (
           <div>
-            <dt className="font-mono text-[11px] tracking-widest text-accent-secondary uppercase">
-              Tradeoff
-            </dt>
-            <dd className="mt-1 text-muted">{decision.tradeoff}</dd>
+            <dt className="t-meta text-kraft">Tradeoff</dt>
+            <dd className="t-ui mt-1.5 text-ink-secondary">{decision.tradeoff}</dd>
           </div>
         )}
       </dl>

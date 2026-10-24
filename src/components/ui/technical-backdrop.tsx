@@ -20,7 +20,7 @@ export function TechnicalBackdrop() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-0 opacity-[0.025]"
+      className="pointer-events-none fixed inset-0 z-0 opacity-[0.02]"
       style={{
         backgroundImage: GRAIN_URL,
         backgroundSize: "128px 128px",

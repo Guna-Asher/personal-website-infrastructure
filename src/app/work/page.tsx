@@ -1,57 +1,60 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/ui/container";
-import { RevealText } from "@/components/ui/reveal-text";
-import { AmbientLayer } from "@/components/ui/ambient-layer";
-import { ProjectIndexRow, ROW_GRID } from "@/components/work/project-index-row";
-import { SkillsSection } from "@/components/skills/skills-section";
+import { PageHeader } from "@/components/ui/page-header";
+import { IndexRow, ROW_GRID } from "@/components/work/index-row";
 import { projects } from "@/lib/data/projects";
 
 export const metadata: Metadata = {
-  title: "Work — Guna R",
+  title: "Systems",
   description: "Three systems Guna R has built, deployed, and operated end to end.",
 };
 
 export default function WorkPage() {
   return (
     <>
-      <section className="relative isolate border-b border-border">
-        <AmbientLayer seed="work" variant="sparse" />
-        <Container className="py-16 md:py-20">
-          <RevealText as="div">
-            <p className="font-mono text-xs tracking-widest text-muted/70 uppercase">Work / Systems</p>
-            <p className="font-display text-lead mt-4 max-w-2xl font-semibold tracking-tight">
-              I&apos;m early in my career and I&apos;d rather show that honestly through working systems
-              than dress it up.
-            </p>
-            <p className="mt-4 max-w-2xl text-muted">
-              Three projects, each built, deployed, and operated end to end. What follows is what each
-              one actually does — the problem, the architecture, the decisions, and what I&apos;d change.
-            </p>
-          </RevealText>
-        </Container>
-      </section>
+      <PageHeader
+        eyebrow="Index / Systems"
+        title={
+          <>
+            I&apos;m early in my career and I&apos;d rather show that honestly through working
+            systems than dress it up.
+          </>
+        }
+        standfirst={
+          <>
+            Three projects, each built, deployed, and operated end to end. What follows is what
+            each one actually does — the problem, the architecture, the decisions, and what
+            I&apos;d change.
+          </>
+        }
+      />
 
       <Container>
-        <div className={`hidden border-b border-border-strong px-4 pt-8 pb-3 lg:grid ${ROW_GRID}`}>
-          <span className="font-mono text-[11px] tracking-widest text-muted/70 uppercase">Index</span>
-          <span className="font-mono text-[11px] tracking-widest text-muted/70 uppercase">System</span>
-          <span className="font-mono text-[11px] tracking-widest text-muted/70 uppercase">Summary</span>
-          <span className="font-mono text-[11px] tracking-widest text-muted/70 uppercase">Stage</span>
+        {/* The column header is what makes this read as a registry rather
+            than three cards. It only exists where the grid does. */}
+        <div
+          className={`hidden border-b border-rule-strong px-4 pt-10 pb-3 lg:grid ${ROW_GRID}`}
+        >
+          <span className="t-meta text-ink-muted">Index</span>
+          <span className="t-meta text-ink-muted">System</span>
+          <span className="t-meta text-ink-muted">Summary</span>
+          <span className="t-meta text-ink-muted">Stage</span>
         </div>
-        <ol className="list-none">
+
+        <ol className="list-none border-t border-rule lg:border-t-0">
           {projects.map((project, i) => (
-            <ProjectIndexRow
+            <IndexRow
               key={project.slug}
               project={project}
               index={String(i + 1).padStart(2, "0")}
-              delay={i * 0.05}
-              emphasis={i === 0}
+              delay={i * 60}
+              headingLevel="h2"
             />
           ))}
         </ol>
       </Container>
 
-      <SkillsSection />
+      <div className="h-20 md:h-28" />
     </>
   );
 }

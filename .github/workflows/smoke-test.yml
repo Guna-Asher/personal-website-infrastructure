@@ -20,20 +20,43 @@ jobs:
     environment: production
 
     steps:
-      - name: Check production endpoint
+      - name: Check production endpoints
         run: |
           set -euo pipefail
 
-          URL="http://${{ secrets.EC2_HOST }}"
+          BASE="http://${{ secrets.EC2_HOST }}"
 
-          echo "Checking: $URL"
+          # Every route, not just "/". A deploy that broke a case study used
+          # to pass this job, because "/" was the only thing ever checked.
+          ROUTES=(
+            "/"
+            "/work"
+            "/approach"
+            "/work/stranger-club"
+            "/work/deployment-portal"
+            "/work/aws-log-monitoring"
+          )
 
-          curl \
-            --fail \
-            --silent \
-            --show-error \
-            --location \
-            --max-time 15 \
-            "$URL" > /dev/null
+          for route in "${ROUTES[@]}"; do
+            echo "Checking: $BASE$route"
+            curl \
+              --fail \
+              --silent \
+              --show-error \
+              --location \
+              --max-time 15 \
+              "$BASE$route" > /dev/null
+          done
 
-          echo "Production endpoint is reachable"
+          # An unknown slug must 404 rather than 200 an empty page — this is
+          # what catches generateStaticParams/notFound() wiring regressions.
+          echo "Checking: $BASE/work/this-does-not-exist returns 404"
+          STATUS="$(curl --silent --output /dev/null --location --max-time 15 \
+            --write-out '%{http_code}' "$BASE/work/this-does-not-exist")"
+
+          if [ "$STATUS" != "404" ]; then
+            echo "Expected 404 for an unknown project slug, got $STATUS"
+            exit 1
+          fi
+
+          echo "All production routes verified"

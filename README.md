@@ -68,10 +68,13 @@ GitHub main
 
 - Next.js App Router
 - TypeScript
-- Tailwind CSS
-- Framer Motion
-- Lucide
+- Tailwind CSS v4 (CSS-first: tokens live in `src/app/globals.css`, no config file)
 - Node.js 22 runtime in Docker
+
+Runtime dependencies are `next`, `react`, and `react-dom` — nothing else. The
+animation library and icon package were removed when the design moved to CSS
+transitions and inline SVG; the build on a t3.small has no memory to spare
+(see Incident 3), so that stays deliberate.
 
 The Next.js production configuration uses standalone output.
 

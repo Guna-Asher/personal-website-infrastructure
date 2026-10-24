@@ -12,19 +12,20 @@ type ThemeContextValue = {
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 function readInitialTheme(): Theme {
-  if (typeof document === "undefined") return "dark";
+  if (typeof document === "undefined") return "light";
   // Prefer the DOM attribute the inline init script already set (avoids a
-  // flash by matching what was painted first) — but fall back to
-  // localStorage directly, since some rendering paths (e.g. notFound()
+  // flash by matching what was painted first) — but fall back to the same
+  // resolution the script uses, since some rendering paths (e.g. notFound()
   // thrown from a nested dynamic segment) can skip that inline script.
   const fromDom = document.documentElement.getAttribute("data-theme");
   if (fromDom === "light" || fromDom === "dark") return fromDom;
   try {
     const stored = window.localStorage.getItem("theme");
-    return stored === "light" ? "light" : "dark";
+    if (stored === "light" || stored === "dark") return stored;
   } catch {
-    return "dark";
+    /* localStorage can throw in a private window — fall through to the OS. */
   }
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
@@ -40,18 +41,40 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Follow the OS while the visitor hasn't made an explicit choice. Once
+  // they click the toggle, `theme` is stored and this stops applying.
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const onChange = (event: MediaQueryListEvent) => {
+      try {
+        if (window.localStorage.getItem("theme")) return;
+      } catch {
+        return;
+      }
+      const next: Theme = event.matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", next);
+      setTheme(next);
+    };
+
+    query.addEventListener("change", onChange);
+    return () => query.removeEventListener("change", onChange);
+  }, []);
+
   const toggleTheme = () => {
     setTheme((prev) => {
       const next: Theme = prev === "light" ? "dark" : "light";
       document.documentElement.setAttribute("data-theme", next);
-      window.localStorage.setItem("theme", next);
+      try {
+        window.localStorage.setItem("theme", next);
+      } catch {
+        /* Not being able to persist the choice shouldn't break the toggle. */
+      }
       return next;
     });
   };
 
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;
 }
 
 export function useTheme() {
@@ -60,14 +83,26 @@ export function useTheme() {
   return ctx;
 }
 
+/**
+ * Runs before first paint. Resolves the theme (stored choice first, then the
+ * OS — light is the identity, so an unset visitor on a light OS gets light),
+ * and marks that JS is alive so the CSS reveal states are safe to apply.
+ */
 export const themeInitScript = `
 (function () {
+  var root = document.documentElement;
+  root.setAttribute('data-js', 'on');
+  var theme = 'light';
   try {
     var stored = localStorage.getItem('theme');
-    var theme = stored === 'light' || stored === 'dark' ? stored : 'dark';
-    document.documentElement.setAttribute('data-theme', theme);
+    if (stored === 'light' || stored === 'dark') {
+      theme = stored;
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      theme = 'dark';
+    }
   } catch (e) {
-    document.documentElement.setAttribute('data-theme', 'dark');
+    theme = 'light';
   }
+  root.setAttribute('data-theme', theme);
 })();
 `;

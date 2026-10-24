@@ -1,37 +1,50 @@
 import type { Metadata } from "next";
-import { Inter, Instrument_Sans, JetBrains_Mono } from "next/font/google";
+import { Inter, Newsreader, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider, themeInitScript } from "@/components/theme/theme-provider";
+import { RevealObserver } from "@/components/ui/reveal-observer";
 import { TechnicalBackdrop } from "@/components/ui/technical-backdrop";
+import { SiteHeader } from "@/components/shell/site-header";
+import { SiteFooter } from "@/components/footer/site-footer";
 import { site } from "@/lib/data/site";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-const instrumentSans = Instrument_Sans({
-  variable: "--font-instrument-sans",
+// The editorial serif carries display and prose; Inter does UI; mono carries
+// metadata. Three families, same as before — Newsreader replaced the
+// display sans, which is what moved this from "techy" to "document".
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
+  display: "swap",
 });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
+  display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
   weight: ["400", "500"],
+  display: "swap",
 });
 
 const title = "Guna R — Cloud / DevOps";
 const description =
-  "Guna R builds backend systems and the infrastructure that runs them — three projects, deployed and operated end to end.";
+  "Guna R builds backend systems and the infrastructure that runs them — three systems, documented the way production systems are: decisions, tradeoffs, and failures included.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title,
+  title: {
+    default: title,
+    template: "%s — Guna R",
+  },
   description,
   openGraph: {
     title,
@@ -41,7 +54,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title,
     description,
   },
@@ -51,22 +64,33 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${instrumentSans.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      // Next 16 no longer overrides `scroll-behavior: smooth` during
+      // navigation. Without this attribute every route change animates a
+      // long scroll instead of jumping, while in-page anchors still glide.
+      data-scroll-behavior="smooth"
+      className={`${newsreader.variable} ${inter.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className="min-h-screen bg-background text-foreground antialiased" suppressHydrationWarning>
+      <body id="top" className="min-h-screen bg-canvas text-ink" suppressHydrationWarning>
         <a
           href="#main-content"
-          className="sr-only rounded-sm bg-accent px-4 py-2 font-mono text-xs tracking-widest text-accent-foreground uppercase focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50"
+          className="t-meta sr-only rounded-sm bg-clay px-4 py-2 text-clay-fg focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50"
         >
           Skip to content
         </a>
         <ThemeProvider>
           <TechnicalBackdrop />
-          <div className="relative z-10">{children}</div>
+          <RevealObserver />
+          <div className="relative z-10 flex min-h-screen flex-col">
+            <SiteHeader />
+            <main id="main-content" className="flex-1">
+              {children}
+            </main>
+            <SiteFooter />
+          </div>
         </ThemeProvider>
       </body>
     </html>

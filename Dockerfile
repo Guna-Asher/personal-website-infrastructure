@@ -33,6 +33,9 @@ RUN addgroup -S -g 1001 nodejs \
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# standalone output does not bundle public/ — it has to be copied in
+# explicitly, or every static asset 404s in production only.
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 USER nextjs
 EXPOSE 3000
