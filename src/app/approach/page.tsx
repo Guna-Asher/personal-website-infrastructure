@@ -72,38 +72,41 @@ export default function ApproachPage() {
       />
 
       <Container>
-        <div className="grid-page">
-          <div className="col-content">
-            {principles.map((principle) => (
-              <article
-                key={principle.index}
-                className="border-b border-rule py-12 last:border-b-0 md:py-16"
-                data-reveal
-              >
-                <p className="t-meta text-ink-muted">
-                  {principle.index} <span className="text-clay-graphic">/</span> Habit
-                </p>
-                <h2 className="t-statement mt-5 text-ink">{principle.title}</h2>
-                <p className="t-body mt-6 text-ink-secondary">{principle.body}</p>
+        {principles.map((principle) => (
+          <article
+            key={principle.index}
+            className="grid-page border-b border-rule py-12 last:border-b-0 md:py-16"
+            data-reveal
+          >
+            <p className="t-meta col-label text-ink-muted">
+              <span aria-hidden>
+                {principle.index} <span className="text-clay-graphic">/</span>{" "}
+              </span>
+              Habit
+            </p>
 
-                {/* The citation. Clay rule on the leading edge, the same
-                    device the architecture diagrams use. */}
-                <blockquote className="mt-8 border-l-2 border-l-clay-graphic bg-raised p-5">
-                  <p className="t-body text-ink-secondary italic">{principle.quote}</p>
-                  <footer className="t-meta mt-4 text-ink-muted not-italic">
-                    From {principle.source.title}
-                  </footer>
-                </blockquote>
+            <div className="col-content mt-5 lg:mt-0">
+              <h2 className="t-statement text-ink">{principle.title}</h2>
+              <p className="t-body measure-prose mt-6 text-ink-secondary">{principle.body}</p>
+            </div>
 
-                <div className="mt-7">
-                  <Link href={`/work/${principle.source.slug}`}>
-                    Read {principle.source.title}
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
+            {/* The citation breaks the reading measure and runs through the
+                outboard track, the same device the case-study figures use —
+                it is the visual accent of this page, so it gets the width. */}
+            <blockquote className="col-content-wide mt-8 border-l-2 border-l-clay-graphic bg-raised p-6">
+              <p className="t-body text-ink-secondary italic">{principle.quote}</p>
+              <footer className="t-meta mt-4 text-ink-muted not-italic">
+                From {principle.source.title}
+              </footer>
+            </blockquote>
+
+            <div className="col-content mt-7">
+              <Link href={`/work/${principle.source.slug}`}>
+                Read {principle.source.title}
+              </Link>
+            </div>
+          </article>
+        ))}
       </Container>
 
       <Section index="04" label="Skills" surface="raised" wide>

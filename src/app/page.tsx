@@ -2,10 +2,10 @@ import { Container } from "@/components/ui/container";
 import { Link } from "@/components/ui/link";
 import { Section } from "@/components/ui/section";
 import { DefinitionRow } from "@/components/ui/definition-row";
+import { ArchitectureDiagram } from "@/components/work/architecture-diagram";
 import { DecisionBlock } from "@/components/work/decision-block";
 import { IndexRow } from "@/components/work/index-row";
 import { projects } from "@/lib/data/projects";
-import { skillCategories } from "@/lib/data/skills";
 import { site } from "@/lib/data/site";
 
 // The homepage cites real material rather than restating it, so it looks the
@@ -28,24 +28,32 @@ if (specimenIndex === -1) {
 }
 const specimen = strangerClub.decisions[specimenIndex];
 
+function HeroFact({ term, value }: { term: string; value: string }) {
+  return (
+    <div>
+      <dt className="t-meta text-ink-muted">{term}</dt>
+      <dd className="t-ui mt-1.5 text-ink-secondary">{value}</dd>
+    </div>
+  );
+}
+
 export default function Home() {
   return (
     <>
       {/* 01 — Statement. The argument, in five seconds. No hero image,
-          nothing centered, and no button: the first screen does not move. */}
-      <section className="border-b border-rule-strong">
-        <Container className="pt-16 pb-20 md:pt-24 md:pb-28 lg:pt-28 lg:pb-32">
+          nothing centered, and no button: the first screen does not move.
+          The eyebrow moved into the margin column and the status facts into
+          the outboard column, so the h1 starts on the same edge as the index
+          rows below it and nothing is indented for no reason. */}
+      <section>
+        <Container className="pt-12 pb-16 md:pt-16 md:pb-20 lg:pt-20 lg:pb-24">
           <div className="grid-page">
-            <div className="col-content">
-              <p className="t-meta text-ink-muted">
-                {site.name} <span className="text-clay-graphic">·</span> {site.role}{" "}
-                <span className="text-clay-graphic">·</span> {site.location}{" "}
-                <span className="text-clay-graphic">·</span> Open to work
-              </p>
+            <p className="t-meta col-label hidden text-ink-muted lg:block">{site.name}</p>
 
-              <h1 className="t-display mt-7 text-ink">{site.tagline}</h1>
+            <div className="col-content mt-6 lg:mt-0">
+              <h1 className="t-display text-ink">{site.tagline}</h1>
 
-              <p className="t-ui measure-lead mt-8 text-ink-secondary">
+              <p className="t-lead measure-lead mt-8 text-ink-secondary">
                 Here are three projects I&apos;ve built and deployed. Each one includes its
                 architecture, the decisions I made and why, and the problems I hit along the way.
               </p>
@@ -55,13 +63,19 @@ export default function Home() {
                 <Link href="/approach">Approach</Link>
               </div>
             </div>
+
+            <dl className="col-outboard mt-12 flex flex-col gap-5 lg:mt-2">
+              <HeroFact term="Role" value={site.role} />
+              <HeroFact term="Location" value={site.location} />
+              <HeroFact term="Status" value="Open to work" />
+            </dl>
           </div>
         </Container>
       </section>
 
-      {/* 02 — The index, on the homepage. The substance is here, not behind
-          a click. This is the structural change the redesign turns on. */}
-      <Section index="01" label="Systems" wide>
+      {/* 02 — The index, tightly coupled to the statement above it: they are
+          one idea, so the gap between them is small. */}
+      <Section index="01" label="Systems" space="tight" wide>
         <ol className="list-none border-t border-rule">
           {projects.map((project, i) => (
             <IndexRow
@@ -74,107 +88,81 @@ export default function Home() {
         </ol>
       </Section>
 
-      {/* 03 — One decision, in full. Proves depth without asking for a
-          click, and it is the thing no other portfolio puts on page one. */}
+      {/* 03 — One decision, in full, with the diagram that shows where in the
+          system it applies and the failures that came out of the same work.
+          This is the section that has to earn the visit, so it gets the most
+          air and the only figure on the page. */}
       <Section
         index="02"
-        label="A decision in detail"
+        label="A decision"
         surface="raised"
+        space="loose"
+        wide
         lead={<>Every project here is written up like this.</>}
       >
-        <div data-reveal>
-          <p className="t-ui measure-prose text-ink-secondary">
-            This one is from {strangerClub.title}. It&apos;s the part of that system where the
-            order of database writes actually matters, because getting it wrong means two players
-            end up in the same slot.
-          </p>
+        <div className="grid-page">
+          <div className="col-content" data-reveal>
+            <p className="t-ui measure-prose text-ink-secondary">
+              This one is from {strangerClub.title}. It&apos;s the part of that system where the
+              order of database writes actually matters, because getting it wrong means two
+              players end up in the same slot.
+            </p>
 
-          <div className="mt-10">
-            <DecisionBlock decision={specimen} index={specimenIndex + 1} />
+            <div className="mt-10">
+              <DecisionBlock decision={specimen} index={specimenIndex + 1} />
+            </div>
           </div>
 
-          <div className="mt-10">
-            <Link href={`/work/${strangerClub.slug}`}>
-              Read the {strangerClub.title} write-up
-            </Link>
+          {/* The figure breaks the reading measure and runs through the
+              outboard track — a wide system flow needs the width. */}
+          <figure className="col-content-wide mt-12 min-w-0" data-reveal>
+            <figcaption className="t-meta text-ink-muted">
+              Fig. 01: Where the write lock is taken
+            </figcaption>
+            <ArchitectureDiagram diagram={strangerClub.architecture.diagram} />
+          </figure>
+
+          <div className="col-content mt-12" data-reveal>
+            <p className="t-meta text-ink-muted">
+              And when it went wrong <span className="text-clay-graphic">/</span>{" "}
+              {portal.title}
+            </p>
+            <div className="mt-6 flex flex-col divide-y divide-rule">
+              {(portal.failureRecovery ?? []).map((entry) => (
+                <div key={entry.symptom} className="py-7 first:pt-0 last:pb-0">
+                  <p className="t-code text-clay">{entry.symptom}</p>
+                  <div className="mt-4">
+                    <DefinitionRow
+                      columns={3}
+                      definitions={[
+                        { term: "Cause", value: entry.cause },
+                        { term: "Fix", value: entry.fix },
+                        { term: "Lesson", value: entry.lesson },
+                      ]}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <Link href={`/work/${strangerClub.slug}`}>
+                Read the {strangerClub.title} write-up
+              </Link>
+              <Link href={`/work/${portal.slug}`}>Read the {portal.title} write-up</Link>
+            </div>
           </div>
         </div>
       </Section>
 
-      {/* 04 — Failure and recovery. Honesty as credibility; content the site
-          already had and used to bury on one sub-page. */}
+      {/* 04 — Contact. Closes without a sales pitch. */}
       <Section
         index="03"
-        label="What broke"
-        lead={<>Problems I ran into building the deployment portal.</>}
-      >
-        <div className="flex flex-col divide-y divide-rule" data-reveal>
-          {(portal.failureRecovery ?? []).map((entry) => (
-            <div key={entry.symptom} className="py-7 first:pt-0 last:pb-0">
-              <p className="t-code text-clay">{entry.symptom}</p>
-              <div className="mt-4">
-                <DefinitionRow
-                  definitions={[
-                    { term: "Cause", value: entry.cause },
-                    { term: "Fix", value: entry.fix },
-                    { term: "Lesson", value: entry.lesson },
-                  ]}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-10">
-          <Link href={`/work/${portal.slug}`}>Read the full write-up</Link>
-        </div>
-      </Section>
-
-      {/* 05 — Practice. The scannable surface, without a skills bar chart. */}
-      <Section index="04" label="Skills" surface="raised" wide>
-        <div className="grid gap-10 border-t border-rule pt-10 md:grid-cols-2 lg:grid-cols-4">
-          {skillCategories.map((category, i) => (
-            <div
-              key={category.label}
-              data-reveal
-              style={{ "--reveal-delay": `${i * 60}ms` } as React.CSSProperties}
-            >
-              <h3 className="t-meta text-ink-muted">
-                <span aria-hidden>
-                  {String(i + 1).padStart(2, "0")}{" "}
-                  <span className="text-clay-graphic">/</span>{" "}
-                </span>
-                {category.label}
-              </h3>
-              <ul className="mt-5 space-y-2.5">
-                {category.skills.map((skill) => (
-                  <li key={skill} className="t-ui text-ink-secondary">
-                    {skill}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-12">
-          <Link href="/approach">How I work</Link>
-        </div>
-      </Section>
-
-      {/* 06 — Record. Closes without a sales pitch. */}
-      <Section
-        index="05"
         label="Contact"
+        space="tight"
         lead={<>I&apos;m open to work in cloud, DevOps, or backend roles.</>}
-      >
-        <div data-reveal>
-          <p className="t-ui measure-prose text-ink-secondary">
-            I&apos;m based in {site.location}. The project write-ups above go into more detail
-            than a CV would.
-          </p>
-
-          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+        outboard={
+          <div className="flex flex-col gap-4">
             <Link href={`mailto:${site.email}`}>Email</Link>
             <Link href={site.github} external>
               GitHub
@@ -189,6 +177,16 @@ export default function Home() {
                 Resume
               </Link>
             )}
+          </div>
+        }
+      >
+        <div data-reveal>
+          <p className="t-ui measure-prose text-ink-secondary">
+            I&apos;m based in {site.location}. The project write-ups above go into more detail
+            than a CV would.
+          </p>
+          <div className="mt-8">
+            <Link href="/approach">How I work</Link>
           </div>
         </div>
       </Section>

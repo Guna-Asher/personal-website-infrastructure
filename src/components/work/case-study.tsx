@@ -22,7 +22,7 @@ function slugify(label: string) {
     .replace(/(^-|-$)/g, "");
 }
 
-type Section = { label: string; content: ReactNode };
+type Section = { label: string; content: ReactNode; figure?: ReactNode };
 
 /**
  * One reusable template, rendered as a margin-labeled technical document —
@@ -52,13 +52,13 @@ export function CaseStudy({
     {
       label: "Architecture",
       content: (
-        <>
-          <p className="t-body measure-prose text-ink-secondary">
-            {project.architecture.summary}
-          </p>
-          <p className="t-meta mt-8 text-ink-muted">Fig. 01: System flow</p>
+        <p className="t-body measure-prose text-ink-secondary">{project.architecture.summary}</p>
+      ),
+      figure: (
+        <figure className="min-w-0">
+          <figcaption className="t-meta text-ink-muted">Fig. 01: System flow</figcaption>
           <ArchitectureDiagram diagram={project.architecture.diagram} />
-        </>
+        </figure>
       ),
     },
     ...(project.decisions.length > 0
@@ -101,7 +101,7 @@ export function CaseStudy({
     ...(project.failureRecovery && project.failureRecovery.length > 0
       ? [
           {
-            label: "What went wrong",
+            label: "What broke",
             content: (
               <div className="flex flex-col divide-y divide-rule">
                 {project.failureRecovery.map((entry) => (
@@ -109,6 +109,7 @@ export function CaseStudy({
                     <p className="t-code text-clay">{entry.symptom}</p>
                     <div className="mt-4">
                       <DefinitionRow
+                        columns={1}
                         definitions={[
                           { term: "Cause", value: entry.cause },
                           { term: "Fix", value: entry.fix },
@@ -178,7 +179,7 @@ export function CaseStudy({
               <section
                 key={section.label}
                 id={tocSections[i].id}
-                className="grid gap-4 border-t border-rule py-10 first:border-t-0 first:pt-0 md:grid-cols-[7rem_1fr] md:gap-8 md:py-12 md:first:pt-0 lg:grid-cols-[calc(2/9*100%)_1fr]"
+                className="grid gap-4 border-t border-rule py-10 first:border-t-0 first:pt-0 md:gap-x-8 md:py-12 md:first:pt-0 lg:grid-cols-9"
                 data-reveal
               >
                 {/* The label sits in the margin, beside the prose — the
@@ -186,13 +187,18 @@ export function CaseStudy({
                     it used to be display:none above lg, which removed it from
                     the accessibility tree and left every heading announcing
                     as just "01 /". */}
-                <h2 className="t-meta text-ink-muted">
+                <h2 className="t-meta text-ink-muted lg:col-span-2">
                   <span aria-hidden>
                     {pad(i + 1)} <span className="text-clay-graphic">/</span>{" "}
                   </span>
                   {section.label}
                 </h2>
-                <div className="min-w-0">{section.content}</div>
+                <div className="min-w-0 lg:col-span-7">{section.content}</div>
+                {section.figure && (
+                  <div className="mt-2 min-w-0 lg:col-span-9 lg:col-start-1">
+                    {section.figure}
+                  </div>
+                )}
               </section>
             ))}
           </div>
@@ -201,7 +207,7 @@ export function CaseStudy({
         <div className="mt-14 flex flex-col gap-8 border-t border-rule-strong pt-10 sm:flex-row sm:items-start sm:justify-between">
           <NextLink
             href="/work"
-            className="t-meta group inline-flex items-center gap-2 rounded-sm text-ink-muted transition-colors duration-150 hover:text-clay"
+            className="t-meta group inline-flex min-h-11 items-center gap-2 rounded-sm text-ink-muted transition-colors duration-150 hover:text-clay"
           >
             <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-150 group-hover:-translate-x-0.5" />
             All systems
@@ -212,7 +218,7 @@ export function CaseStudy({
               {next && (
                 <NextLink
                   href={`/work/${next.slug}`}
-                  className="t-meta group inline-flex items-center gap-2 rounded-sm text-right text-ink-muted transition-colors duration-150 hover:text-clay"
+                  className="t-meta group inline-flex min-h-11 items-center gap-2 rounded-sm text-right text-ink-muted transition-colors duration-150 hover:text-clay"
                 >
                   Next: {next.title}
                   <ArrowRight className="h-3.5 w-3.5 transition-transform duration-150 group-hover:translate-x-0.5" />
@@ -221,7 +227,7 @@ export function CaseStudy({
               {previous && (
                 <NextLink
                   href={`/work/${previous.slug}`}
-                  className="t-meta group inline-flex items-center gap-2 rounded-sm text-ink-muted transition-colors duration-150 hover:text-clay"
+                  className="t-meta group inline-flex min-h-11 items-center gap-2 rounded-sm text-ink-muted transition-colors duration-150 hover:text-clay"
                 >
                   <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-150 group-hover:-translate-x-0.5" />
                   Previous: {previous.title}

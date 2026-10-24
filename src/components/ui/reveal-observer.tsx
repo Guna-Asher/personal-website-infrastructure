@@ -48,9 +48,18 @@ export function RevealObserver() {
     const mutations = new MutationObserver(observeAll);
     mutations.observe(document.body, { childList: true, subtree: true });
 
+    // Safety net. A client that runs JS but never scrolls — a screenshot
+    // service, a social-card renderer, print — would otherwise be left
+    // looking at a page where everything below the fold is still at
+    // opacity 0. Reveal the rest shortly after load.
+    const failsafe = window.setTimeout(() => {
+      document.querySelectorAll("[data-reveal]").forEach(reveal);
+    }, 2000);
+
     return () => {
       observer.disconnect();
       mutations.disconnect();
+      window.clearTimeout(failsafe);
     };
   }, []);
 

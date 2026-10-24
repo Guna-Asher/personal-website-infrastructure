@@ -81,6 +81,14 @@
   --kraft: #c39264;
 }
 
+/* In dark mode the page canvas is already near-black, so an inverse surface
+   has to step *down* to stay legible as its own band rather than dissolving
+   into the page. */
+[data-theme="dark"] [data-surface="inverse"] {
+  --canvas: #0d0d0c;
+  --raised: #171715;
+}
+
 @theme inline {
   --color-canvas: var(--canvas);
   --color-raised: var(--raised);
@@ -105,6 +113,7 @@
   --radius-sm: 2px;
   --radius-md: 4px;
 
+  --breakpoint-xs: 30rem;
   --breakpoint-prose: 1200px;
 }
 
@@ -306,6 +315,29 @@
        the labels land in the margin and the prose still starts at col 3. */
     .col-body {
       grid-column: 1 / span 9;
+    }
+    /* A figure that breaks the reading measure: starts on the prose edge and
+       runs to the end of the grid, through the outboard track. */
+    .col-content-wide {
+      grid-column: 3 / span 10;
+    }
+
+    /* Index rows. These exist so a full-width row aligns to the same two
+       edges as everything else: the numeral sits in the margin track with
+       the section labels, and the title starts on the prose edge. A fixed
+       rem track can never line up with percentage columns, which is why the
+       old ROW_GRID was 16px off. */
+    .col-row-id {
+      grid-column: 1 / span 2;
+    }
+    .col-row-identity {
+      grid-column: 3 / span 4;
+    }
+    .col-row-summary {
+      grid-column: 7 / span 4;
+    }
+    .col-row-meta {
+      grid-column: 11 / span 2;
     }
   }
 }

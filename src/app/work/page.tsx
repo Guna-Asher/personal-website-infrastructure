@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/ui/container";
 import { PageHeader } from "@/components/ui/page-header";
-import { IndexRow, ROW_GRID } from "@/components/work/index-row";
+import { IndexRow } from "@/components/work/index-row";
 import { projects } from "@/lib/data/projects";
 
 export const metadata: Metadata = {
@@ -29,16 +29,14 @@ export default function WorkPage() {
         }
       />
 
-      <Container>
+      <Container className="pb-20 md:pb-28">
         {/* The column header is what makes this read as a registry rather
-            than three cards. It only exists where the grid does. */}
-        <div
-          className={`hidden border-b border-rule-strong px-4 pt-10 pb-3 lg:grid ${ROW_GRID}`}
-        >
-          <span className="t-meta text-ink-muted">Index</span>
-          <span className="t-meta text-ink-muted">System</span>
-          <span className="t-meta text-ink-muted">Summary</span>
-          <span className="t-meta text-ink-muted">Stage</span>
+            than three cards. It sits on the same grid as the rows. */}
+        <div className="grid-page hidden border-b border-rule-strong pt-10 pb-3 lg:grid">
+          <span className="t-meta col-row-id text-ink-muted">Index</span>
+          <span className="t-meta col-row-identity text-ink-muted">System</span>
+          <span className="t-meta col-row-summary text-ink-muted">Summary</span>
+          <span className="t-meta col-row-meta text-ink-muted">Stage</span>
         </div>
 
         <ol className="list-none border-t border-rule lg:border-t-0">
@@ -53,8 +51,6 @@ export default function WorkPage() {
           ))}
         </ol>
       </Container>
-
-      <div className="h-20 md:h-28" />
     </>
   );
 }
