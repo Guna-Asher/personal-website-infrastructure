@@ -1,3 +1,5 @@
+import type { DiagramSpec } from "./diagram";
+
 export type ProjectStage = "MVP" | "Shipped";
 
 export type EngineeringDecision = {
@@ -20,14 +22,14 @@ export type ProjectCaseStudy = {
   type: string;
   stage: ProjectStage;
   oneLiner: string;
-  /** One real, compressed line distilled from `architecture.diagram` — used as a teaser on /work. */
+  /** One real, compressed line distilled from the architecture — used as a teaser on /work. */
   flow: string;
   stack: string[];
   github: string;
   problem: string;
   architecture: {
     summary: string;
-    diagram: string;
+    diagram: DiagramSpec;
   };
   decisions: EngineeringDecision[];
   deployment: string;
@@ -53,33 +55,54 @@ export const projects: ProjectCaseStudy[] = [
     architecture: {
       summary:
         "A Vite-built React frontend talks to a single FastAPI backend over two API surfaces — a public one that needs no account, and a protected one behind organiser authentication. Both sit in front of the same SQLite database. State changes are published to any browser tab currently viewing that event over Server-Sent Events, so slot counts update live without polling.",
-      diagram: `Player (no account)          Organiser (session + CSRF)
-      │                              │
-      ▼                              ▼
-  Public API                   Protected API
-      │                              │
-      └──────────────┬───────────────┘
-                      ▼
-                   FastAPI
-                      │
-        ┌─────────────┼─────────────┐
-        ▼             ▼             ▼
-     Events     Registrations    Payments
-        │             │             │
-        └─────────────┼─────────────┘
-                       ▼
-                    SQLite
-         (BEGIN IMMEDIATE on capacity-
-          sensitive writes — see below)
-                       │
-                       ▼
-              Domain state change
-                       │
-                       ▼
-                      SSE
-                       │
-                       ▼
-             Connected browser tabs`,
+      diagram: {
+      layers: [
+        {
+          label: "Clients",
+          nodes: [
+            { id: "player", label: "Player", note: "no account", kind: "actor" },
+            { id: "organiser", label: "Organiser", note: "session + CSRF", kind: "actor" },
+          ],
+        },
+        {
+          label: "API surface",
+          nodes: [
+            { id: "public-api", label: "Public API" },
+            { id: "protected-api", label: "Protected API" },
+          ],
+        },
+        { label: "Application", nodes: [{ id: "fastapi", label: "FastAPI" }] },
+        {
+          label: "Domain services",
+          nodes: [
+            { id: "events", label: "Events" },
+            { id: "registrations", label: "Registrations" },
+            { id: "payments", label: "Payments" },
+          ],
+        },
+        {
+          label: "Persistence",
+          nodes: [
+            {
+              id: "sqlite",
+              label: "SQLite",
+              note: "BEGIN IMMEDIATE on capacity-sensitive writes",
+              kind: "store",
+              emphasis: true,
+            },
+          ],
+        },
+        {
+          label: "Live updates",
+          nodes: [{ id: "state-change", label: "Domain state change", kind: "event" }],
+        },
+        { label: "Transport", nodes: [{ id: "sse", label: "SSE", kind: "event" }] },
+        {
+          label: "Clients",
+          nodes: [{ id: "tabs", label: "Connected browser tabs", kind: "actor" }],
+        },
+      ],
+    },
     },
     decisions: [
       {
@@ -155,26 +178,35 @@ export const projects: ProjectCaseStudy[] = [
     architecture: {
       summary:
         "A FastAPI backend is the orchestration layer for everything: authentication, the application/version registry, deployment execution, and audit logging. PostgreSQL is the source of truth for deployment history. The backend never touches containers directly — every container operation is delegated to the Docker CLI, invoked through a wrapper the backend calls as a background task so the API responds immediately while the deployment runs.",
-      diagram: `Developer (JWT session)
-        │
-        ▼
-   Web Dashboard
-        │
-        ▼
-  FastAPI Backend ────────────► PostgreSQL
-        │                     (users, apps, versions,
-        │                      deployments, logs)
-        ▼
-  Background Task
-        │
-        ▼
-  Docker CLI (subprocess)
-        │
-        ▼
-   Docker Daemon
-        │
-        ▼
-  Application container`,
+      diagram: {
+      layers: [
+        {
+          label: "Client",
+          nodes: [{ id: "developer", label: "Developer", note: "JWT session", kind: "actor" }],
+        },
+        { label: "Interface", nodes: [{ id: "dashboard", label: "Web Dashboard" }] },
+        {
+          label: "Orchestration",
+          nodes: [
+            {
+              id: "backend",
+              label: "FastAPI Backend",
+              aside: {
+                label: "PostgreSQL",
+                note: "users, apps, versions, deployments, logs",
+              },
+            },
+          ],
+        },
+        { label: "Execution", nodes: [{ id: "task", label: "Background Task" }] },
+        {
+          label: "Container control",
+          nodes: [{ id: "cli", label: "Docker CLI", note: "subprocess" }],
+        },
+        { label: "Runtime", nodes: [{ id: "daemon", label: "Docker Daemon" }] },
+        { label: "Result", nodes: [{ id: "container", label: "Application container" }] },
+      ],
+    },
     },
     decisions: [
       {
@@ -252,22 +284,41 @@ export const projects: ProjectCaseStudy[] = [
     architecture: {
       summary:
         "A single Python script reads the local application log, keeps only lines containing ERROR, and uploads them to S3 as a timestamped object so nothing gets overwritten. It runs inside a Docker container for environment parity between a laptop and the EC2 host, and cron triggers it hourly. A GitHub Actions workflow validates that the Docker image still builds on every push.",
-      diagram: `EC2 instance
-    │
-    ▼
- app.log (local)
-    │
-    ▼
- monitor.py — filters lines containing "ERROR"
-    │
-    ▼
- boto3 put_object() — credentials from IAM instance role
-    │
-    ▼
- S3 bucket (errors_<timestamp>.log)
-
-Trigger: cron, hourly
-Build check: GitHub Actions, on every push`,
+      diagram: {
+      layers: [
+        { label: "Host", nodes: [{ id: "ec2", label: "EC2 instance", kind: "actor" }] },
+        {
+          label: "Source",
+          nodes: [{ id: "log", label: "app.log", note: "local file" }],
+        },
+        {
+          label: "Filter",
+          nodes: [{ id: "monitor", label: "monitor.py", note: "keeps lines containing ERROR" }],
+        },
+        {
+          label: "Upload",
+          nodes: [
+            {
+              id: "boto3",
+              label: "boto3 put_object()",
+              note: "credentials from IAM instance role",
+            },
+          ],
+        },
+        {
+          label: "Archive",
+          nodes: [
+            {
+              id: "s3",
+              label: "S3 bucket",
+              note: "errors_<timestamp>.log",
+              kind: "store",
+            },
+          ],
+        },
+      ],
+      footnotes: ["Trigger: cron, hourly", "Build check: GitHub Actions, on every push"],
+    },
     },
     decisions: [
       {
